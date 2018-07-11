@@ -1,0 +1,15 @@
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.dll
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.pdb
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.dll.manifest
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.vsto
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csprojAssemblyReference.cache
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.Properties.Resources.resources
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csproj.GenerateResource.cache
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csproj.CoreCompileInputs.cache
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csproj.CopyComplete
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.dll
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.pdb
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.ManageTaskPaneRibbon.resources
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.TaskPaneControl.resources
+C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.UserLogInControl.resources
