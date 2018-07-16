@@ -165,12 +165,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UserLogInControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserLogInControl.Designer.cs">
-      <DependentUpon>UserLogInControl.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="ManageTaskPaneRibbon.resx">
       <DependentUpon>ManageTaskPaneRibbon.cs</DependentUpon>
     </EmbeddedResource>
@@ -186,9 +180,7 @@
     <EmbeddedResource Include="TaskPaneControl.resx">
       <DependentUpon>TaskPaneControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserLogInControl.resx">
-      <DependentUpon>UserLogInControl.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="ExcelAddIn1_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

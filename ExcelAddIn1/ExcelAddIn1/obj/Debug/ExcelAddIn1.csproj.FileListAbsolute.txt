@@ -12,4 +12,3 @@ C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.dll
 C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.pdb
 C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.ManageTaskPaneRibbon.resources
 C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.TaskPaneControl.resources
-C:\Users\jiatwang\source\repos\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.UserLogInControl.resources

@@ -12,21 +12,13 @@ namespace ExcelAddIn1
     public partial class ThisAddIn
     {
         private TaskPaneControl taskPaneControl1;
-        private UserLogInControl userloginControl;
         private Microsoft.Office.Tools.CustomTaskPane taskPaneValue;
-        private Microsoft.Office.Tools.CustomTaskPane userloginPaneValue;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             taskPaneControl1 = new TaskPaneControl();
             taskPaneValue = this.CustomTaskPanes.Add(
     taskPaneControl1, "MyCustomTaskPane");
             taskPaneValue.VisibleChanged +=
-                new EventHandler(taskPaneValue_VisibleChanged);
-
-            userloginControl = new UserLogInControl();
-            userloginPaneValue = this.CustomTaskPanes.Add(
-    taskPaneControl1, "MyCustomTaskPane");
-            userloginPaneValue.VisibleChanged +=
                 new EventHandler(taskPaneValue_VisibleChanged);
         }
         private void taskPaneValue_VisibleChanged(object sender, System.EventArgs e)
@@ -44,13 +36,6 @@ namespace ExcelAddIn1
             get
             {
                 return taskPaneValue;
-            }
-        }
-        public Microsoft.Office.Tools.CustomTaskPane LogInPane 
-        {
-            get
-            {
-                return userloginPaneValue;
             }
         }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
