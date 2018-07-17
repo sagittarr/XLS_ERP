@@ -43,13 +43,14 @@
             this.unhidebutton = new System.Windows.Forms.Button();
             this.deephidebutton = new System.Windows.Forms.Button();
             this.buysideTabPage = new System.Windows.Forms.TabPage();
-            this.sellsideTabPage = new System.Windows.Forms.TabPage();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.sellsideTabPage = new System.Windows.Forms.TabPage();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.eventLog1 = new System.Diagnostics.EventLog();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.protectbutton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.managerTabPage.SuspendLayout();
@@ -163,6 +164,7 @@
             // 
             // managerTabPage
             // 
+            this.managerTabPage.Controls.Add(this.protectbutton);
             this.managerTabPage.Controls.Add(this.showUserButton);
             this.managerTabPage.Controls.Add(this.unhidebutton);
             this.managerTabPage.Controls.Add(this.deephidebutton);
@@ -218,16 +220,23 @@
             this.buysideTabPage.UseVisualStyleBackColor = true;
             this.buysideTabPage.Click += new System.EventHandler(this.tabPage3_Click);
             // 
-            // sellsideTabPage
+            // button2
             // 
-            this.sellsideTabPage.Controls.Add(this.comboBox1);
-            this.sellsideTabPage.Location = new System.Drawing.Point(4, 29);
-            this.sellsideTabPage.Name = "sellsideTabPage";
-            this.sellsideTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.sellsideTabPage.Size = new System.Drawing.Size(338, 464);
-            this.sellsideTabPage.TabIndex = 3;
-            this.sellsideTabPage.Text = "销售模块";
-            this.sellsideTabPage.UseVisualStyleBackColor = true;
+            this.button2.Location = new System.Drawing.Point(50, 193);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(248, 29);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(50, 139);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(248, 29);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // listBox1
             // 
@@ -241,31 +250,16 @@
             this.listBox1.Size = new System.Drawing.Size(248, 64);
             this.listBox1.TabIndex = 1;
             // 
-            // button1
+            // sellsideTabPage
             // 
-            this.button1.Location = new System.Drawing.Point(50, 139);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(248, 29);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(50, 193);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(248, 29);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // printDocument1
-            // 
-            this.printDocument1.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printDocument1_PrintPage);
-            // 
-            // eventLog1
-            // 
-            this.eventLog1.SynchronizingObject = this;
+            this.sellsideTabPage.Controls.Add(this.comboBox1);
+            this.sellsideTabPage.Location = new System.Drawing.Point(4, 29);
+            this.sellsideTabPage.Name = "sellsideTabPage";
+            this.sellsideTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.sellsideTabPage.Size = new System.Drawing.Size(338, 464);
+            this.sellsideTabPage.TabIndex = 3;
+            this.sellsideTabPage.Text = "销售模块";
+            this.sellsideTabPage.UseVisualStyleBackColor = true;
             // 
             // comboBox1
             // 
@@ -277,6 +271,20 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(206, 28);
             this.comboBox1.TabIndex = 0;
+            // 
+            // eventLog1
+            // 
+            this.eventLog1.SynchronizingObject = this;
+            // 
+            // protectbutton
+            // 
+            this.protectbutton.Location = new System.Drawing.Point(110, 175);
+            this.protectbutton.Name = "protectbutton";
+            this.protectbutton.Size = new System.Drawing.Size(121, 33);
+            this.protectbutton.TabIndex = 11;
+            this.protectbutton.Text = "上锁/解锁";
+            this.protectbutton.UseVisualStyleBackColor = true;
+            this.protectbutton.Click += new System.EventHandler(this.button3_Click);
             // 
             // TaskPaneControl
             // 
@@ -319,5 +327,6 @@
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Diagnostics.EventLog eventLog1;
+        private System.Windows.Forms.Button protectbutton;
     }
 }

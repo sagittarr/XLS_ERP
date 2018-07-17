@@ -162,11 +162,19 @@ namespace ExcelAddIn1
                     MessageBox.Show(PROTECTED_ERROR_MESSAGE);
                 }
             }
+            //Protect(getPasswordFromUser, missing, missing);
         }
 
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.ActiveWorkbook.Protect("1111");
+            MessageBox.Show("锁定/解锁完成");
+        }
 
+        private void unlockbutton_Click(object sender, EventArgs e)
+        {
+            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect("1111");
+            MessageBox.Show("解锁完成");
         }
     }
 }
