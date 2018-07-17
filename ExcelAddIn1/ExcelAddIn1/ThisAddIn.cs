@@ -17,7 +17,7 @@ namespace ExcelAddIn1
         {
             taskPaneControl1 = new TaskPaneControl();
             taskPaneValue = this.CustomTaskPanes.Add(
-    taskPaneControl1, "MyCustomTaskPane");
+    taskPaneControl1, "ERP Excel 助手");
             taskPaneValue.VisibleChanged +=
                 new EventHandler(taskPaneValue_VisibleChanged);
         }

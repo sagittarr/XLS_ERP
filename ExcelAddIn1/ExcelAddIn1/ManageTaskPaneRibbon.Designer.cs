@@ -52,7 +52,7 @@
             // group1
             // 
             this.group1.Items.Add(this.toggleButton1);
-            this.group1.Label = "ERP Demo";
+            this.group1.Label = "ERP Excel 助手";
             this.group1.Name = "group1";
             // 
             // toggleButton1
