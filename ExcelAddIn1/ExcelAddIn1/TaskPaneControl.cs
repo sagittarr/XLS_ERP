@@ -23,6 +23,8 @@ namespace ExcelAddIn1
         }
         private string PROTECTED_ERROR_MESSAGE = "Add-in has no permission to modify WorkBook's structure.";
         private string VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE = "visible sheet should be at least more than one.";
+        private string UserPasswordTable = "UserPasswordTable";
+        private string UserPermissionTable = "UserPermissionTable";
         private void deepHideWorkSheet(Worksheet theSheet)
         {
             if (theSheet == null) return;
@@ -141,16 +143,24 @@ namespace ExcelAddIn1
                 names.Add(worksheet.Name);
             }
             //Worksheet userTable = (Worksheet)Globals.ThisAddIn.Application.Sheets["ERP_User_Table"];
-            var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>()
-                                   .SingleOrDefault(w => w.Name == "ERP_User_Table");
+            var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
             if (userTable == null)
             {
                 Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
-                newsheet.Name = "ERP_User_Table";
-
-                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[3, 3]];
-                
-                rng.Value = new string[,] { { "Id", "password", "Sheet 1", "Sheet 2" }, { "zhang", "zhang123", "True", "True" }, { "Li", "Li123", "False", "True" } };
+                newsheet.Name = UserPasswordTable;
+                var numOfSheets = names.Count;
+                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[numOfSheets+2, numOfSheets+2]];
+                string[,] values = new string[2, numOfSheets+2];
+                values[0, 0] = "ID";
+                values[0, 1] = "PASSWORD";
+                values[1, 0] = "superuser";
+                values[1, 1] = "su2018";
+                for (var i = 0; i<names.Count; i++)
+                {
+                    values[0, i + 2] = names[i];
+                    values[1, i + 2] = "W";
+                }
+                rng.Value =values;
             }
             //foreach (Worksheet worksheet in Globals.ThisAddIn.Application.Worksheets)
             //{
@@ -167,7 +177,7 @@ namespace ExcelAddIn1
 
             else
             {
-                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["UserPasswordTable"];
                 unHideWorkSheet(theSheet);
                 try
                 {
@@ -208,7 +218,8 @@ namespace ExcelAddIn1
             {
                 return;
             }
-            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+            //Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets[UserPasswordTable];
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
             if (worksheet == null)
             {
                 Console.WriteLine("ERROR: worksheet == null");
@@ -258,6 +269,45 @@ namespace ExcelAddIn1
         private void passwordBox_TextChanged(object sender, EventArgs e)
         {
             passwordBox.UseSystemPasswordChar = true;
+        }
+
+        private void ManageButton_Click(object sender, EventArgs e)
+        {
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            if (worksheet == null)
+            {
+                Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
+                newsheet.Name = UserPermissionTable;
+                List<string> names = new List<string>();
+                foreach (Worksheet ws in Globals.ThisAddIn.Application.Worksheets)
+                {
+                    names.Add(ws.Name);
+                }
+                var numOfSheets = names.Count;
+                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[numOfSheets + 1, numOfSheets + 1]];
+                string[,] values = new string[2, numOfSheets + 1];
+                values[0, 0] = "ID";
+                values[1, 0] = "superuser";
+                for (var i = 0; i < names.Count; i++)
+                {
+                    values[0, i + 1] = names[i];
+                    values[1, i + 1] = "W";
+                }
+                rng.Value = values;
+            }
+            else
+            {
+                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets[UserPermissionTable];
+                unHideWorkSheet(theSheet);
+                try
+                {
+                    theSheet.Select();
+                }
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                }
+            }
         }
     }
 }
