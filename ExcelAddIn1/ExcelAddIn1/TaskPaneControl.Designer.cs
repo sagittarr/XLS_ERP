@@ -30,15 +30,17 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.loginbutton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.usernameBox = new System.Windows.Forms.TextBox();
+            this.passwordBox = new System.Windows.Forms.TextBox();
             this.sellsidebutton = new System.Windows.Forms.Button();
             this.buysidebutton = new System.Windows.Forms.Button();
             this.managerButton = new System.Windows.Forms.Button();
             this.managerTabPage = new System.Windows.Forms.TabPage();
+            this.protectbutton = new System.Windows.Forms.Button();
             this.showUserButton = new System.Windows.Forms.Button();
             this.unhidebutton = new System.Windows.Forms.Button();
             this.deephidebutton = new System.Windows.Forms.Button();
@@ -50,7 +52,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.eventLog1 = new System.Diagnostics.EventLog();
-            this.protectbutton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.managerTabPage.SuspendLayout();
@@ -73,11 +74,12 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.loginbutton);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Controls.Add(this.usernameBox);
+            this.tabPage1.Controls.Add(this.passwordBox);
             this.tabPage1.Controls.Add(this.sellsidebutton);
             this.tabPage1.Controls.Add(this.buysidebutton);
             this.tabPage1.Controls.Add(this.managerButton);
@@ -88,6 +90,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "身份选择";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // loginbutton
+            // 
+            this.loginbutton.Location = new System.Drawing.Point(86, 231);
+            this.loginbutton.Name = "loginbutton";
+            this.loginbutton.Size = new System.Drawing.Size(189, 31);
+            this.loginbutton.TabIndex = 8;
+            this.loginbutton.Text = "登录";
+            this.loginbutton.UseVisualStyleBackColor = true;
+            this.loginbutton.Click += new System.EventHandler(this.loginbutton_Click);
             // 
             // label3
             // 
@@ -118,23 +130,25 @@
             this.label1.Text = "用户名";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // textBox2
+            // usernameBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(86, 131);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(189, 26);
-            this.textBox2.TabIndex = 4;
+            this.usernameBox.Location = new System.Drawing.Point(86, 131);
+            this.usernameBox.Name = "usernameBox";
+            this.usernameBox.Size = new System.Drawing.Size(189, 26);
+            this.usernameBox.TabIndex = 4;
+            this.usernameBox.TextChanged += new System.EventHandler(this.usernameBox_TextChanged);
             // 
-            // textBox1
+            // passwordBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(86, 179);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(189, 26);
-            this.textBox1.TabIndex = 3;
+            this.passwordBox.Location = new System.Drawing.Point(86, 179);
+            this.passwordBox.Name = "passwordBox";
+            this.passwordBox.Size = new System.Drawing.Size(189, 26);
+            this.passwordBox.TabIndex = 3;
+            this.passwordBox.TextChanged += new System.EventHandler(this.passwordBox_TextChanged);
             // 
             // sellsidebutton
             // 
-            this.sellsidebutton.Location = new System.Drawing.Point(86, 337);
+            this.sellsidebutton.Location = new System.Drawing.Point(86, 376);
             this.sellsidebutton.Name = "sellsidebutton";
             this.sellsidebutton.Size = new System.Drawing.Size(189, 37);
             this.sellsidebutton.TabIndex = 2;
@@ -144,7 +158,7 @@
             // 
             // buysidebutton
             // 
-            this.buysidebutton.Location = new System.Drawing.Point(86, 280);
+            this.buysidebutton.Location = new System.Drawing.Point(86, 333);
             this.buysidebutton.Name = "buysidebutton";
             this.buysidebutton.Size = new System.Drawing.Size(189, 37);
             this.buysidebutton.TabIndex = 1;
@@ -154,7 +168,7 @@
             // 
             // managerButton
             // 
-            this.managerButton.Location = new System.Drawing.Point(86, 225);
+            this.managerButton.Location = new System.Drawing.Point(86, 294);
             this.managerButton.Name = "managerButton";
             this.managerButton.Size = new System.Drawing.Size(189, 33);
             this.managerButton.TabIndex = 0;
@@ -175,6 +189,16 @@
             this.managerTabPage.TabIndex = 1;
             this.managerTabPage.Text = "管理员控制台";
             this.managerTabPage.UseVisualStyleBackColor = true;
+            // 
+            // protectbutton
+            // 
+            this.protectbutton.Location = new System.Drawing.Point(110, 175);
+            this.protectbutton.Name = "protectbutton";
+            this.protectbutton.Size = new System.Drawing.Size(121, 33);
+            this.protectbutton.TabIndex = 11;
+            this.protectbutton.Text = "上锁/解锁";
+            this.protectbutton.UseVisualStyleBackColor = true;
+            this.protectbutton.Click += new System.EventHandler(this.button3_Click);
             // 
             // showUserButton
             // 
@@ -276,16 +300,6 @@
             // 
             this.eventLog1.SynchronizingObject = this;
             // 
-            // protectbutton
-            // 
-            this.protectbutton.Location = new System.Drawing.Point(110, 175);
-            this.protectbutton.Name = "protectbutton";
-            this.protectbutton.Size = new System.Drawing.Size(121, 33);
-            this.protectbutton.TabIndex = 11;
-            this.protectbutton.Text = "上锁/解锁";
-            this.protectbutton.UseVisualStyleBackColor = true;
-            this.protectbutton.Click += new System.EventHandler(this.button3_Click);
-            // 
             // TaskPaneControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -316,8 +330,8 @@
         private System.Windows.Forms.Button sellsidebutton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox usernameBox;
+        private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.TabPage sellsideTabPage;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button showUserButton;
@@ -328,5 +342,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Diagnostics.EventLog eventLog1;
         private System.Windows.Forms.Button protectbutton;
+        private System.Windows.Forms.Button loginbutton;
     }
 }

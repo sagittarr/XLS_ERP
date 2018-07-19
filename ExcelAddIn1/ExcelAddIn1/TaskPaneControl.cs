@@ -139,16 +139,32 @@ namespace ExcelAddIn1
             foreach (Worksheet worksheet in Globals.ThisAddIn.Application.Worksheets)
             {
                 names.Add(worksheet.Name);
-                //NamedRange1.Offset[index, 0].Value2 = displayWorksheet.Name;
-                //index++;
             }
-            if (!names.Contains("ERP_User_Table"))
+            //Worksheet userTable = (Worksheet)Globals.ThisAddIn.Application.Sheets["ERP_User_Table"];
+            var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>()
+                                   .SingleOrDefault(w => w.Name == "ERP_User_Table");
+            if (userTable == null)
             {
                 Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
                 newsheet.Name = "ERP_User_Table";
+
                 var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[3, 3]];
-                rng.Value = new string[,] { { "用户Id", "Sheet 1", "Sheet 2" }, { "zhang", "True", "True" }, { "Li", "False", "True" } };
+                
+                rng.Value = new string[,] { { "Id", "password", "Sheet 1", "Sheet 2" }, { "zhang", "zhang123", "True", "True" }, { "Li", "Li123", "False", "True" } };
             }
+            //foreach (Worksheet worksheet in Globals.ThisAddIn.Application.Worksheets)
+            //{
+            //    names.Add(worksheet.Name);
+            //    //NamedRange1.Offset[index, 0].Value2 = displayWorksheet.Name;
+            //    //index++;
+            //}            //if (!names.Contains("ERP_User_Table"))
+            //{
+            //    Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
+            //    newsheet.Name = "ERP_User_Table";
+            //    var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[3, 3]];
+            //    rng.Value = new string[,] { { "Id", "password","Sheet 1", "Sheet 2" }, { "zhang", "zhang123", "True", "True" }, { "Li", "Li123", "False", "True" } };
+            //}
+
             else
             {
                 Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
@@ -167,7 +183,9 @@ namespace ExcelAddIn1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Globals.ThisAddIn.Application.ActiveWorkbook.Protect("1111");
+            //Globals.ThisAddIn.Application.ActiveWorkbook.Protect("1111");
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+            worksheet.Protect("1111");
             MessageBox.Show("锁定/解锁完成");
         }
 
@@ -175,6 +193,71 @@ namespace ExcelAddIn1
         {
             Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect("1111");
             MessageBox.Show("解锁完成");
+        }
+
+        private void loginbutton_Click(object sender, EventArgs e)
+        {
+            string username, password = null;
+            int entryNumber = -1;
+            if(usernameBox.Text!=null && usernameBox.Text.Length > 0 && passwordBox.Text != null && passwordBox.Text.Length > 0)
+            {
+                username = usernameBox.Text;
+                password = passwordBox.Text;
+            }
+            else
+            {
+                return;
+            }
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+            if (worksheet == null)
+            {
+                Console.WriteLine("ERROR: worksheet == null");
+            }
+            Range currentFind;
+            Range range = worksheet.Columns["A:A", Type.Missing];
+            currentFind = range.Cells.Find(username, Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
+                            XlSearchOrder.xlByRows, XlSearchDirection.xlNext, true, false, false);
+            if (currentFind != null)
+            {
+                entryNumber = currentFind.Row;
+                //MessageBox.Show(currentFind.Row.ToString());
+            }
+            else
+            {
+                MessageBox.Show("Username not found");
+                return;
+            }
+
+            Range rangeRows = worksheet.Rows["1:1"];
+            currentFind = rangeRows.Cells.Find("Password", Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
+                XlSearchOrder.xlByColumns, XlSearchDirection.xlNext, false, false, false);
+            if(currentFind != null)
+            {
+                //MessageBox.Show(currentFind.Row.ToString() + "," + currentFind.Column.ToString());
+                Range rangeTarget = worksheet.Cells[entryNumber, currentFind.Column];
+                if (string.Equals(rangeTarget.Value2, password))
+                {
+                    MessageBox.Show("Password match!");
+                }
+                else
+                {
+                    MessageBox.Show("Password doesn't match!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Password column not found");
+            }
+        }
+
+        private void usernameBox_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void passwordBox_TextChanged(object sender, EventArgs e)
+        {
+            passwordBox.UseSystemPasswordChar = true;
         }
     }
 }
