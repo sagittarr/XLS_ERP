@@ -53,21 +53,21 @@ namespace ExcelAddIn1
            
         }
         //////
-        public void logout()
-        {
-            ThisAddIn.applyPermission(ThisAddIn.getPermission("guest"));
-            //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-            Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key,true);
-            Globals.ThisAddIn.Application.ActiveWorkbook.Save();
-            MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name+Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure.ToString());
-            taskPaneControl1.SetUserLabel("guest");
-        }
-        public void login(string username)
-        {
-            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-            ThisAddIn.applyPermission(ThisAddIn.getPermission(username));
-            taskPaneControl1.SetUserLabel(username);
-        }
+        //public void logout()
+        //{
+        //    ThisAddIn.applyPermission(ThisAddIn.getPermission("guest"));
+        //    //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
+        //    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key,true);
+        //    Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+        //    MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name+Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure.ToString());
+        //    this.SetUserLabel("guest");
+        //}
+        //public void login(string username)
+        //{
+        //    Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
+        //    ThisAddIn.applyPermission(ThisAddIn.getPermission(username));
+        //    taskPaneControl1.SetUserLabel(username);
+        //}
         public static void deepHideWorkSheet(Excel.Worksheet theSheet)
         {
             if (theSheet == null) return;

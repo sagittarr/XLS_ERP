@@ -250,7 +250,8 @@ namespace ExcelAddIn1
                 if (string.Equals(rangeTarget.Value2, password))
                 {
                     MessageBox.Show("Password match!");
-                    Globals.ThisAddIn.login(username);                  
+                    //Globals.ThisAddIn.login(username);  
+                    this.login(username);
                 }
                 else
                 {
@@ -385,7 +386,7 @@ namespace ExcelAddIn1
 
         private void logoutButton_Click(object sender, EventArgs e)
         {
-            Globals.ThisAddIn.logout();
+            this.logout();
             //Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key);
         }
 
@@ -393,7 +394,21 @@ namespace ExcelAddIn1
         {
             userLabel.Text = text;
         }
-
+        public void login(string username)
+        {
+            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
+            ThisAddIn.applyPermission(ThisAddIn.getPermission(username));
+            this.SetUserLabel(username);
+        }
+        public void logout()
+        {
+            ThisAddIn.applyPermission(ThisAddIn.getPermission("guest"));
+            //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
+            Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key, true);
+            Globals.ThisAddIn.Application.ActiveWorkbook.Save();
+            MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name + Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure.ToString());
+            this.SetUserLabel("guest");
+        }
         //private void protect_Click(object sender, EventArgs e)
         //{
         //    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key, true);

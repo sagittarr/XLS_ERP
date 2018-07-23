@@ -13,13 +13,25 @@ namespace ExcelAddIn1
 
         }
 
+        //private void toggleButton1_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Globals.ThisAddIn.TaskPane.Visible = ((RibbonToggleButton)sender).Checked;
+        //    Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(ThisAddIn.key);
+        //    Dictionary<string, string> p = ThisAddIn.getPermission("guest");
+        //    if (p != null)
+        //        Globals.ThisAddIn.login("guest");
+        //}
         private void toggleButton1_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.TaskPane.Visible = ((RibbonToggleButton)sender).Checked;
-            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(ThisAddIn.key);
+            var taskpane = TaskPaneManager.GetTaskPane("A", "ERP Excel 助手", () => new TaskPaneControl());
+            taskpane.Visible = ((RibbonToggleButton)sender).Checked;
+            var tpc = (TaskPaneControl)taskpane.Control;
             Dictionary<string, string> p = ThisAddIn.getPermission("guest");
             if (p != null)
-                Globals.ThisAddIn.login("guest");
+                tpc.login("guest");
+            tpc.SetUserLabel("guest");
+
+
         }
     }
 }
