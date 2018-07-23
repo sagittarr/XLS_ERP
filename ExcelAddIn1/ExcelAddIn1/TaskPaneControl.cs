@@ -25,6 +25,11 @@ namespace ExcelAddIn1
         private string VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE = "visible sheet should be at least more than one.";
         private string UserPasswordTable = "UserPasswordTable";
         private string UserPermissionTable = "UserPermissionTable";
+        private string PermissionOperation = "Writable,ReadOnly,Invisible";
+        private string Writable = "Writable";
+        private string ReadOnly = "ReadOnly";
+        private string Invisible = "Invisible";
+        private const string key = "1234";
         private void deepHideWorkSheet(Worksheet theSheet)
         {
             if (theSheet == null) return;
@@ -103,27 +108,27 @@ namespace ExcelAddIn1
 
         }
 
-        private void buysidebutton_Click(object sender, EventArgs e)
-        {
-            while (tabControl1.TabPages.Count > 1)
-            {
-                tabControl1.TabPages.RemoveAt(1);
-            }
-            tabControl1.TabPages.Add(buysideTabPage);
-            Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-            deepHideWorkSheet(theSheet);
-        }
+        //private void buysidebutton_Click(object sender, EventArgs e)
+        //{
+        //    while (tabControl1.TabPages.Count > 1)
+        //    {
+        //        tabControl1.TabPages.RemoveAt(1);
+        //    }
+        //    tabControl1.TabPages.Add(buysideTabPage);
+        //    Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+        //    deepHideWorkSheet(theSheet);
+        //}
 
-        private void sellsidebutton_Click(object sender, EventArgs e)
-        {
-            while (tabControl1.TabPages.Count > 1)
-            {
-                tabControl1.TabPages.RemoveAt(1);
-            }
-            tabControl1.TabPages.Add(sellsideTabPage);
-            Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-            deepHideWorkSheet(theSheet);
-        }
+        //private void sellsidebutton_Click(object sender, EventArgs e)
+        //{
+        //    while (tabControl1.TabPages.Count > 1)
+        //    {
+        //        tabControl1.TabPages.RemoveAt(1);
+        //    }
+        //    tabControl1.TabPages.Add(sellsideTabPage);
+        //    Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
+        //    deepHideWorkSheet(theSheet);
+        //}
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -137,47 +142,22 @@ namespace ExcelAddIn1
 
         private void showUserButton_Click(object sender, EventArgs e)
         {
-            List<string> names = new List<string>();
-            foreach (Worksheet worksheet in Globals.ThisAddIn.Application.Worksheets)
-            {
-                names.Add(worksheet.Name);
-            }
-            //Worksheet userTable = (Worksheet)Globals.ThisAddIn.Application.Sheets["ERP_User_Table"];
             var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
             if (userTable == null)
             {
                 Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
                 newsheet.Name = UserPasswordTable;
-                var numOfSheets = names.Count;
-                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[numOfSheets+2, numOfSheets+2]];
-                string[,] values = new string[2, numOfSheets+2];
+                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[2, 2]];
+                string[,] values = new string[2, 2];
                 values[0, 0] = "ID";
                 values[0, 1] = "PASSWORD";
                 values[1, 0] = "superuser";
                 values[1, 1] = "su2018";
-                for (var i = 0; i<names.Count; i++)
-                {
-                    values[0, i + 2] = names[i];
-                    values[1, i + 2] = "W";
-                }
                 rng.Value =values;
             }
-            //foreach (Worksheet worksheet in Globals.ThisAddIn.Application.Worksheets)
-            //{
-            //    names.Add(worksheet.Name);
-            //    //NamedRange1.Offset[index, 0].Value2 = displayWorksheet.Name;
-            //    //index++;
-            //}            //if (!names.Contains("ERP_User_Table"))
-            //{
-            //    Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
-            //    newsheet.Name = "ERP_User_Table";
-            //    var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[3, 3]];
-            //    rng.Value = new string[,] { { "Id", "password","Sheet 1", "Sheet 2" }, { "zhang", "zhang123", "True", "True" }, { "Li", "Li123", "False", "True" } };
-            //}
-
             else
             {
-                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["UserPasswordTable"];
+                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets[UserPasswordTable];
                 unHideWorkSheet(theSheet);
                 try
                 {
@@ -193,16 +173,37 @@ namespace ExcelAddIn1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //Globals.ThisAddIn.Application.ActiveWorkbook.Protect("1111");
             Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-            worksheet.Protect("1111");
+            worksheet.Protect(key);
             MessageBox.Show("锁定/解锁完成");
         }
 
         private void unlockbutton_Click(object sender, EventArgs e)
         {
-            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect("1111");
+            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
             MessageBox.Show("解锁完成");
+        }
+
+        private Dictionary<string, string> getPermission(string userName)
+        {
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            Range currentFind;
+            Range range = worksheet.Columns["A:A", Type.Missing];
+            currentFind = range.Cells.Find(userName, Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
+                            XlSearchOrder.xlByRows, XlSearchDirection.xlNext, true, false, false);
+            Range firstRow = worksheet.UsedRange.Rows[1];
+            Range theRow = worksheet.UsedRange.Rows[currentFind.Row];
+            //StringBuilder sb = new StringBuilder();
+            Dictionary<string, string> permission = new Dictionary<string, string>();
+            foreach(Range col in theRow.Columns)
+            {
+                //string v = firstRow.Cells[1, col.Column].value2;
+                //sb.Append(v);
+                //sb.Append(":"+ theRow.Cells[1,col.Column].value2+';');
+                permission.Add(firstRow.Cells[1, col.Column].value2, theRow.Cells[1, col.Column].value2);
+            }
+            return permission;
+            //MessageBox.Show(sb.ToString());
         }
 
         private void loginbutton_Click(object sender, EventArgs e)
@@ -219,7 +220,7 @@ namespace ExcelAddIn1
                 return;
             }
             //Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets[UserPasswordTable];
-            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
+            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
             if (worksheet == null)
             {
                 Console.WriteLine("ERROR: worksheet == null");
@@ -249,6 +250,7 @@ namespace ExcelAddIn1
                 if (string.Equals(rangeTarget.Value2, password))
                 {
                     MessageBox.Show("Password match!");
+                    Globals.ThisAddIn.login(username);                  
                 }
                 else
                 {
@@ -270,38 +272,109 @@ namespace ExcelAddIn1
         {
             passwordBox.UseSystemPasswordChar = true;
         }
-
-        private void ManageButton_Click(object sender, EventArgs e)
+        private string GetExcelColumnName(int columnNumber)
         {
-            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
-            if (worksheet == null)
+            int dividend = columnNumber;
+            string columnName = String.Empty;
+            int modulo;
+
+            while (dividend > 0)
             {
-                Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
-                newsheet.Name = UserPermissionTable;
-                List<string> names = new List<string>();
-                foreach (Worksheet ws in Globals.ThisAddIn.Application.Worksheets)
+                modulo = (dividend - 1) % 26;
+                columnName = Convert.ToChar(65 + modulo).ToString() + columnName;
+                dividend = (int)((dividend - modulo) / 26);
+            }
+
+            return columnName;
+        }
+        private List<int> getRangeIndex(Range range, bool rowYN)
+        {
+            List<int> idx = new List<int>();
+
+            if (rowYN)
+            {
+                foreach (Range v in range.Cells)
                 {
-                    names.Add(ws.Name);
+                    idx.Add(v.Row);
                 }
-                var numOfSheets = names.Count;
-                var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[numOfSheets + 1, numOfSheets + 1]];
-                string[,] values = new string[2, numOfSheets + 1];
-                values[0, 0] = "ID";
-                values[1, 0] = "superuser";
-                for (var i = 0; i < names.Count; i++)
-                {
-                    values[0, i + 1] = names[i];
-                    values[1, i + 1] = "W";
-                }
-                rng.Value = values;
             }
             else
             {
-                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets[UserPermissionTable];
+                foreach (Range v in range.Cells)
+                {
+                    idx.Add(v.Column);
+                }
+            }
+            return idx;
+        }
+        private void ManageButton_Click(object sender, EventArgs e)
+        {
+
+            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            List<string> sheetNames = new List<string>();
+            foreach (Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+            {
+                sheetNames.Add(ws.Name);
+            }
+
+            if (worksheet == null)
+            {
+                Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                theSheet.Name = UserPermissionTable;
+                sheetNames.Add(UserPermissionTable);
+                var numOfSheets = sheetNames.Count;
+                var rng = theSheet.Range[theSheet.Cells[1, 1], theSheet.Cells[3, numOfSheets + 1]];
+                string[,] values = new string[3, numOfSheets + 1];
+                values[0, 0] = "ID";
+                values[1, 0] = "superuser";
+                values[2, 0] = "guest";
+                for (var i = 0; i < sheetNames.Count; i++)
+                {
+                    values[0, i + 1] = sheetNames[i];
+                    values[1, i + 1] = Writable;
+                    values[2, i + 1] = ReadOnly;
+                }
+                rng.Value = values;
+                theSheet.Range["B:"+ GetExcelColumnName(numOfSheets+1)].Validation.Add(XlDVType.xlValidateList, Type.Missing,XlFormatConditionOperator.xlBetween, PermissionOperation);
+                theSheet.Range["1:1"].Validation.Delete();
+                //theSheet.Range["A:A"].Validation.Delete();
+            }
+            else
+            {
+                Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[UserPermissionTable];
                 unHideWorkSheet(theSheet);
                 try
                 {
                     theSheet.Select();
+                    Range firstRow = theSheet.UsedRange.Rows[1];
+                    System.Array myvalues = (System.Array)firstRow.Cells.Value;
+                    List<string> lst = myvalues.OfType<object>().Select(o => o.ToString()).ToList();
+                    List<string> toAdd = new List<string>();
+                    foreach(string name in sheetNames)
+                    {
+                        if (!lst.Contains(name))
+                        {
+                            toAdd.Add(name);
+                        }
+                    }
+                    //newSheetNames.AddRange(toAdd);
+                    foreach(string newColumnName in toAdd)
+                    {
+                        Range rangeTarget = worksheet.Cells[1, theSheet.UsedRange.Columns.Count + 1];
+                        rangeTarget.Value2 = newColumnName;
+                    }
+                    int totalColumns = theSheet.UsedRange.Columns.Count;
+                    //MessageBox.Show(totalColumns.ToString());
+                    theSheet.Range["B:" + GetExcelColumnName(totalColumns)].Validation.Delete();
+                    theSheet.Range["B:" + GetExcelColumnName(totalColumns)].Validation.Add(XlDVType.xlValidateList, Type.Missing, XlFormatConditionOperator.xlBetween, PermissionOperation);
+                    theSheet.Range["1:1"].Validation.Delete();
+                    //Range firstColumn = theSheet.UsedRange.Columns[1];
+                    //List<int> idx = getRangeIndex(firstColumn, true);
+                    //MessageBox.Show(string.Join(",",idx));
+                    //Range firstColumn = theSheet.UsedRange.Columns[1];
+                    //myvalues = (System.Array)firstColumn.Cells.Value;
+                    //lst = myvalues.OfType<object>().Select(o => o.ToString()).ToList();
+
                 }
                 catch (System.Runtime.InteropServices.COMException)
                 {
@@ -309,5 +382,21 @@ namespace ExcelAddIn1
                 }
             }
         }
+
+        private void logoutButton_Click(object sender, EventArgs e)
+        {
+            Globals.ThisAddIn.logout();
+            //Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key);
+        }
+
+        public void SetUserLabel(string text)
+        {
+            userLabel.Text = text;
+        }
+
+        //private void protect_Click(object sender, EventArgs e)
+        //{
+        //    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key, true);
+        //}
     }
 }
