@@ -179,6 +179,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="ManageTaskPaneRibbon.cs">
       <SubType>Component</SubType>
     </Compile>

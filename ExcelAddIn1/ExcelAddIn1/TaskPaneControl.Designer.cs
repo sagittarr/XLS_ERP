@@ -38,10 +38,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
-            this.managerButton = new System.Windows.Forms.Button();
             this.managerTabPage = new System.Windows.Forms.TabPage();
             this.ManageButton = new System.Windows.Forms.Button();
-            this.protectbutton = new System.Windows.Forms.Button();
             this.showUserButton = new System.Windows.Forms.Button();
             this.unhidebutton = new System.Windows.Forms.Button();
             this.deephidebutton = new System.Windows.Forms.Button();
@@ -83,7 +81,6 @@
             this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.usernameBox);
             this.tabPage1.Controls.Add(this.passwordBox);
-            this.tabPage1.Controls.Add(this.managerButton);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -166,20 +163,9 @@
             this.passwordBox.TabIndex = 3;
             this.passwordBox.TextChanged += new System.EventHandler(this.passwordBox_TextChanged);
             // 
-            // managerButton
-            // 
-            this.managerButton.Location = new System.Drawing.Point(85, 287);
-            this.managerButton.Name = "managerButton";
-            this.managerButton.Size = new System.Drawing.Size(189, 32);
-            this.managerButton.TabIndex = 0;
-            this.managerButton.Text = "管理员";
-            this.managerButton.UseVisualStyleBackColor = true;
-            this.managerButton.Click += new System.EventHandler(this.managerbutton_Click);
-            // 
             // managerTabPage
             // 
             this.managerTabPage.Controls.Add(this.ManageButton);
-            this.managerTabPage.Controls.Add(this.protectbutton);
             this.managerTabPage.Controls.Add(this.showUserButton);
             this.managerTabPage.Controls.Add(this.unhidebutton);
             this.managerTabPage.Controls.Add(this.deephidebutton);
@@ -201,16 +187,6 @@
             this.ManageButton.Text = "权限管理";
             this.ManageButton.UseVisualStyleBackColor = true;
             this.ManageButton.Click += new System.EventHandler(this.ManageButton_Click);
-            // 
-            // protectbutton
-            // 
-            this.protectbutton.Location = new System.Drawing.Point(110, 294);
-            this.protectbutton.Name = "protectbutton";
-            this.protectbutton.Size = new System.Drawing.Size(122, 32);
-            this.protectbutton.TabIndex = 11;
-            this.protectbutton.Text = "上锁/解锁";
-            this.protectbutton.UseVisualStyleBackColor = true;
-            this.protectbutton.Click += new System.EventHandler(this.button3_Click);
             // 
             // showUserButton
             // 
@@ -337,7 +313,6 @@
         private System.Windows.Forms.TabPage buysideTabPage;
         private System.Windows.Forms.Button unhidebutton;
         private System.Windows.Forms.Button deephidebutton;
-        private System.Windows.Forms.Button managerButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox usernameBox;
@@ -351,7 +326,6 @@
         private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Diagnostics.EventLog eventLog1;
-        private System.Windows.Forms.Button protectbutton;
         private System.Windows.Forms.Button loginbutton;
         private System.Windows.Forms.Button ManageButton;
         private System.Windows.Forms.Label userLabel;

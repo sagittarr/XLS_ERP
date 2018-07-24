@@ -21,15 +21,6 @@ namespace ExcelAddIn1
             tabControl1.TabPages.Remove(buysideTabPage);
             tabControl1.TabPages.Remove(sellsideTabPage);
         }
-        private string PROTECTED_ERROR_MESSAGE = "Add-in has no permission to modify WorkBook's structure.";
-        private string VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE = "visible sheet should be at least more than one.";
-        private string UserPasswordTable = "UserPasswordTable";
-        private string UserPermissionTable = "UserPermissionTable";
-        private string PermissionOperation = "Writable,ReadOnly,Invisible";
-        private string Writable = "Writable";
-        private string ReadOnly = "ReadOnly";
-        private string Invisible = "Invisible";
-        private const string key = "1234";
         private void deepHideWorkSheet(Worksheet theSheet)
         {
             if (theSheet == null) return;
@@ -39,7 +30,7 @@ namespace ExcelAddIn1
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
         private void unHideWorkSheet(Worksheet theSheet)
@@ -51,7 +42,7 @@ namespace ExcelAddIn1
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
 
@@ -78,7 +69,7 @@ namespace ExcelAddIn1
             }
             else
             {
-                MessageBox.Show(VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE);
+                MessageBox.Show(Constants.VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE);
             }
         }
 
@@ -93,42 +84,9 @@ namespace ExcelAddIn1
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
-
-        private void managerbutton_Click(object sender, EventArgs e)
-        {
-            while (tabControl1.TabPages.Count > 1)
-            {
-                tabControl1.TabPages.RemoveAt(1);
-            }
-            tabControl1.TabPages.Add(managerTabPage);
-            tabControl1.SelectedTab = managerTabPage;
-
-        }
-
-        //private void buysidebutton_Click(object sender, EventArgs e)
-        //{
-        //    while (tabControl1.TabPages.Count > 1)
-        //    {
-        //        tabControl1.TabPages.RemoveAt(1);
-        //    }
-        //    tabControl1.TabPages.Add(buysideTabPage);
-        //    Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-        //    deepHideWorkSheet(theSheet);
-        //}
-
-        //private void sellsidebutton_Click(object sender, EventArgs e)
-        //{
-        //    while (tabControl1.TabPages.Count > 1)
-        //    {
-        //        tabControl1.TabPages.RemoveAt(1);
-        //    }
-        //    tabControl1.TabPages.Add(sellsideTabPage);
-        //    Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-        //    deepHideWorkSheet(theSheet);
-        //}
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -142,22 +100,22 @@ namespace ExcelAddIn1
 
         private void showUserButton_Click(object sender, EventArgs e)
         {
-            var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
+            var userTable = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPasswordTable);
             if (userTable == null)
             {
                 Worksheet newsheet = Globals.ThisAddIn.Application.Worksheets.Add();
-                newsheet.Name = UserPasswordTable;
+                newsheet.Name = Constants.UserPasswordTable;
                 var rng = newsheet.Range[newsheet.Cells[1, 1], newsheet.Cells[2, 2]];
                 string[,] values = new string[2, 2];
                 values[0, 0] = "ID";
                 values[0, 1] = "PASSWORD";
-                values[1, 0] = "superuser";
+                values[1, 0] = "admin";
                 values[1, 1] = "su2018";
                 rng.Value =values;
             }
             else
             {
-                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets[UserPasswordTable];
+                Worksheet theSheet = Globals.ThisAddIn.Application.Worksheets[Constants.UserPasswordTable];
                 unHideWorkSheet(theSheet);
                 try
                 {
@@ -165,45 +123,26 @@ namespace ExcelAddIn1
                 }
                 catch (System.Runtime.InteropServices.COMException)
                 {
-                    MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                    MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
                 }
             }
-            //Protect(getPasswordFromUser, missing, missing);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets["ERP_User_Table"];
-            worksheet.Protect(key);
-            MessageBox.Show("锁定/解锁完成");
-        }
-
-        private void unlockbutton_Click(object sender, EventArgs e)
-        {
-            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-            MessageBox.Show("解锁完成");
         }
 
         private Dictionary<string, string> getPermission(string userName)
         {
-            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPermissionTable);
             Range currentFind;
             Range range = worksheet.Columns["A:A", Type.Missing];
             currentFind = range.Cells.Find(userName, Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
                             XlSearchOrder.xlByRows, XlSearchDirection.xlNext, true, false, false);
             Range firstRow = worksheet.UsedRange.Rows[1];
             Range theRow = worksheet.UsedRange.Rows[currentFind.Row];
-            //StringBuilder sb = new StringBuilder();
             Dictionary<string, string> permission = new Dictionary<string, string>();
             foreach(Range col in theRow.Columns)
             {
-                //string v = firstRow.Cells[1, col.Column].value2;
-                //sb.Append(v);
-                //sb.Append(":"+ theRow.Cells[1,col.Column].value2+';');
                 permission.Add(firstRow.Cells[1, col.Column].value2, theRow.Cells[1, col.Column].value2);
             }
             return permission;
-            //MessageBox.Show(sb.ToString());
         }
 
         private void loginbutton_Click(object sender, EventArgs e)
@@ -219,8 +158,15 @@ namespace ExcelAddIn1
             {
                 return;
             }
+            if(username == Constants.root && password == "root2018")
+            {
+                MessageBox.Show(username + " 登录成功");
+                //Globals.ThisAddIn.login(username);  
+                this.login(username);
+                return;
+            }
             //Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets[UserPasswordTable];
-            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPasswordTable);
+            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPasswordTable);
             if (worksheet == null)
             {
                 Console.WriteLine("ERROR: worksheet == null");
@@ -249,7 +195,7 @@ namespace ExcelAddIn1
                 Range rangeTarget = worksheet.Cells[entryNumber, currentFind.Column];
                 if (string.Equals(rangeTarget.Value2, password))
                 {
-                    MessageBox.Show("Password match!");
+                    MessageBox.Show(username + " 登录成功");
                     //Globals.ThisAddIn.login(username);  
                     this.login(username);
                 }
@@ -311,7 +257,7 @@ namespace ExcelAddIn1
         private void ManageButton_Click(object sender, EventArgs e)
         {
 
-            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPermissionTable);
             List<string> sheetNames = new List<string>();
             foreach (Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
             {
@@ -321,28 +267,33 @@ namespace ExcelAddIn1
             if (worksheet == null)
             {
                 Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
-                theSheet.Name = UserPermissionTable;
-                sheetNames.Add(UserPermissionTable);
+                theSheet.Name = Constants.UserPermissionTable;
+                sheetNames.Add(Constants.UserPermissionTable);
                 var numOfSheets = sheetNames.Count;
-                var rng = theSheet.Range[theSheet.Cells[1, 1], theSheet.Cells[3, numOfSheets + 1]];
-                string[,] values = new string[3, numOfSheets + 1];
+                var rng = theSheet.Range[theSheet.Cells[1, 1], theSheet.Cells[3, numOfSheets + 2]];
+                string[,] values = new string[3, numOfSheets + 2];
                 values[0, 0] = "ID";
-                values[1, 0] = "superuser";
-                values[2, 0] = "guest";
+                values[1, 0] = "admin";
+                values[2, 0] = Constants.guest;
+
+                values[0, 1] = Constants.structure;
+                values[1, 1] = Constants.Mutable;
+                values[2, 1] = Constants.InMutable;
                 for (var i = 0; i < sheetNames.Count; i++)
                 {
-                    values[0, i + 1] = sheetNames[i];
-                    values[1, i + 1] = Writable;
-                    values[2, i + 1] = ReadOnly;
+                    values[0, i + 2] = sheetNames[i];
+                    values[1, i + 2] = Constants.Writable;
+                    values[2, i + 2] = Constants.ReadOnly;
                 }
                 rng.Value = values;
-                theSheet.Range["B:"+ GetExcelColumnName(numOfSheets+1)].Validation.Add(XlDVType.xlValidateList, Type.Missing,XlFormatConditionOperator.xlBetween, PermissionOperation);
+                theSheet.Range["B:B"].Validation.Add(XlDVType.xlValidateList, Type.Missing, XlFormatConditionOperator.xlBetween, Constants.Mutable + "," + Constants.InMutable);
+                theSheet.Range["C:"+ GetExcelColumnName(numOfSheets+1)].Validation.Add(XlDVType.xlValidateList, Type.Missing,XlFormatConditionOperator.xlBetween, Constants.PermissionOperation);
                 theSheet.Range["1:1"].Validation.Delete();
                 //theSheet.Range["A:A"].Validation.Delete();
             }
             else
             {
-                Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[UserPermissionTable];
+                Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[Constants.UserPermissionTable];
                 unHideWorkSheet(theSheet);
                 try
                 {
@@ -367,19 +318,13 @@ namespace ExcelAddIn1
                     int totalColumns = theSheet.UsedRange.Columns.Count;
                     //MessageBox.Show(totalColumns.ToString());
                     theSheet.Range["B:" + GetExcelColumnName(totalColumns)].Validation.Delete();
-                    theSheet.Range["B:" + GetExcelColumnName(totalColumns)].Validation.Add(XlDVType.xlValidateList, Type.Missing, XlFormatConditionOperator.xlBetween, PermissionOperation);
+                    theSheet.Range["B:B"].Validation.Add(XlDVType.xlValidateList, Type.Missing, XlFormatConditionOperator.xlBetween, Constants.Mutable + "," + Constants.InMutable);
+                    theSheet.Range["C:" + GetExcelColumnName(totalColumns)].Validation.Add(XlDVType.xlValidateList, Type.Missing, XlFormatConditionOperator.xlBetween, Constants.PermissionOperation);
                     theSheet.Range["1:1"].Validation.Delete();
-                    //Range firstColumn = theSheet.UsedRange.Columns[1];
-                    //List<int> idx = getRangeIndex(firstColumn, true);
-                    //MessageBox.Show(string.Join(",",idx));
-                    //Range firstColumn = theSheet.UsedRange.Columns[1];
-                    //myvalues = (System.Array)firstColumn.Cells.Value;
-                    //lst = myvalues.OfType<object>().Select(o => o.ToString()).ToList();
-
                 }
                 catch (System.Runtime.InteropServices.COMException)
                 {
-                    MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                    MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
                 }
             }
         }
@@ -396,22 +341,46 @@ namespace ExcelAddIn1
         }
         public void login(string username)
         {
-            Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-            ThisAddIn.applyPermission(ThisAddIn.getPermission(username));
+            ThisAddIn.applyPermission(ThisAddIn.getPermission(username), username == Constants.root);
             this.SetUserLabel(username);
+            showTab2User(username);
         }
         public void logout()
         {
-            ThisAddIn.applyPermission(ThisAddIn.getPermission("guest"));
+            ThisAddIn.applyPermission(ThisAddIn.getPermission(Constants.guest));
             //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-            Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key, true);
+            Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
             Globals.ThisAddIn.Application.ActiveWorkbook.Save();
-            MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name + Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure.ToString());
-            this.SetUserLabel("guest");
+            if(Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure){
+                MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name + " 退出登录成功" );
+            }
+            this.SetUserLabel(Constants.guest);
+            removeDupTabs();
         }
-        //private void protect_Click(object sender, EventArgs e)
+        private void removeDupTabs()
+        {
+            while (tabControl1.TabPages.Count > 1)
+            {
+                tabControl1.TabPages.RemoveAt(1);
+            }
+        }
+        //private void showManagerTab()
         //{
-        //    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key, true);
+        //    removeDupTabs();
+        //    tabControl1.TabPages.Add(managerTabPage);
+        //    tabControl1.SelectedTab = managerTabPage;
         //}
+
+        private void showTab2User(string username)
+        {
+            if (username == Constants.root)
+            {
+                removeDupTabs();
+                tabControl1.TabPages.Add(managerTabPage);
+                tabControl1.TabPages.Add(sellsideTabPage);
+                tabControl1.TabPages.Add(buysideTabPage);
+                tabControl1.SelectedTab = managerTabPage;
+            }
+        }
     }
 }

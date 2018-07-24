@@ -13,14 +13,6 @@ namespace ExcelAddIn1
 {
     public partial class ThisAddIn
     {
-        public const string PROTECTED_ERROR_MESSAGE = "Add-in has no permission to modify WorkBook's structure.";
-        public const string VISIBLE_SHEET_LESS_THAN_TWO_MESSAGE = "visible sheet should be at least more than one.";
-        public const string Writable = "Writable";
-        public const string ReadOnly = "ReadOnly";
-        public const string Invisible = "Invisible";
-        public const string UserPasswordTable = "UserPasswordTable";
-        public const string UserPermissionTable = "UserPermissionTable";
-        public const string key = "1234";
         private TaskPaneControl taskPaneControl1;
         private Microsoft.Office.Tools.CustomTaskPane taskPaneValue;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
@@ -52,22 +44,6 @@ namespace ExcelAddIn1
         {
            
         }
-        //////
-        //public void logout()
-        //{
-        //    ThisAddIn.applyPermission(ThisAddIn.getPermission("guest"));
-        //    //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-        //    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(key,true);
-        //    Globals.ThisAddIn.Application.ActiveWorkbook.Save();
-        //    MessageBox.Show(Globals.ThisAddIn.Application.ActiveWorkbook.Name+Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure.ToString());
-        //    this.SetUserLabel("guest");
-        //}
-        //public void login(string username)
-        //{
-        //    Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
-        //    ThisAddIn.applyPermission(ThisAddIn.getPermission(username));
-        //    taskPaneControl1.SetUserLabel(username);
-        //}
         public static void deepHideWorkSheet(Excel.Worksheet theSheet)
         {
             if (theSheet == null) return;
@@ -77,7 +53,7 @@ namespace ExcelAddIn1
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
         public static void unHideWorkSheet(Excel.Worksheet theSheet)
@@ -89,57 +65,82 @@ namespace ExcelAddIn1
             }
             catch (System.Runtime.InteropServices.COMException)
             {
-                MessageBox.Show(PROTECTED_ERROR_MESSAGE);
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
         public static Dictionary<string, string> getPermission(string userName)
         {
             //Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets
-            Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Excel.Worksheet>().SingleOrDefault(w => w.Name == UserPermissionTable);
+            Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Excel.Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPermissionTable);
             if (worksheet == null) return null;
             Range currentFind;
             Range range = worksheet.Columns["A:A", Type.Missing];
             currentFind = range.Cells.Find(userName, Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
                             XlSearchOrder.xlByRows, XlSearchDirection.xlNext, true, false, false);
             Range firstRow = worksheet.UsedRange.Rows[1];
+            if(currentFind == null)
+            {
+                MessageBox.Show(userName + "is not found in permission table.");
+                return null;
+            }
             Range theRow = worksheet.UsedRange.Rows[currentFind.Row];
             //StringBuilder sb = new StringBuilder();
             Dictionary<string, string> permission = new Dictionary<string, string>();
             foreach (Range col in theRow.Columns)
             {
-                //string v = firstRow.Cells[1, col.Column].value2;
-                //sb.Append(v);
-                //sb.Append(":"+ theRow.Cells[1,col.Column].value2+';');
                 permission.Add(firstRow.Cells[1, col.Column].value2, theRow.Cells[1, col.Column].value2);
             }
             return permission;
-            //MessageBox.Show(sb.ToString());
         }
-        public static void applyPermission(Dictionary<string, string> permission)
+        public static void applyPermission(Dictionary<string, string> permission, bool isRootUser = false)
         {
-            if (permission == null) return;
-            foreach (Excel.Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+            try
             {
-                if (permission.ContainsKey(ws.Name))
+                if (isRootUser == true)
                 {
-                    if (permission[ws.Name] == Invisible)
+                    Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
+                    return;
+                }
+                if (permission == null) return;
+                Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
+                foreach (Excel.Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+                {
+                    if (permission.ContainsKey(ws.Name))
                     {
-                        deepHideWorkSheet(ws);
-                    }
-                    else if (permission[ws.Name] == ReadOnly)
-                    {
-                        unHideWorkSheet(ws);
-                        ws.Protect(key);
-                    }
-                    else
-                    {
-                        unHideWorkSheet(ws);
-                        ws.Unprotect(key);
+                        if (permission[ws.Name] == Constants.Invisible)
+                        {
+                            deepHideWorkSheet(ws);
+                        }
+                        else if (permission[ws.Name] == Constants.ReadOnly)
+                        {
+                            unHideWorkSheet(ws);
+                            ws.Protect(Constants.key);
+                        }
+                        else
+                        {
+                            unHideWorkSheet(ws);
+                            ws.Unprotect(Constants.key);
+                        }
                     }
                 }
+                if (permission.ContainsKey(Constants.structure))
+                {
+                    if (permission[Constants.structure] != Constants.Mutable)
+                    {
+                        Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
+                    }
+                }
+                else
+                {
+                    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
+                }
             }
-            
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
+            }
         }
+
         #region VSTO generated code
 
         /// <summary>

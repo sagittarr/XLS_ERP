@@ -26,10 +26,12 @@ namespace ExcelAddIn1
             var taskpane = TaskPaneManager.GetTaskPane("A", "ERP Excel 助手", () => new TaskPaneControl());
             taskpane.Visible = ((RibbonToggleButton)sender).Checked;
             var tpc = (TaskPaneControl)taskpane.Control;
-            Dictionary<string, string> p = ThisAddIn.getPermission("guest");
+            Dictionary<string, string> p = ThisAddIn.getPermission(Constants.guest);
             if (p != null)
-                tpc.login("guest");
-            tpc.SetUserLabel("guest");
+            {
+                tpc.login(Constants.guest);
+                tpc.SetUserLabel(Constants.guest);
+            }
 
 
         }
