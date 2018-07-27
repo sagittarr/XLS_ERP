@@ -41,8 +41,6 @@
             this.managerTabPage = new System.Windows.Forms.TabPage();
             this.ManageButton = new System.Windows.Forms.Button();
             this.showUserButton = new System.Windows.Forms.Button();
-            this.unhidebutton = new System.Windows.Forms.Button();
-            this.deephidebutton = new System.Windows.Forms.Button();
             this.buysideTabPage = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -167,8 +165,6 @@
             // 
             this.managerTabPage.Controls.Add(this.ManageButton);
             this.managerTabPage.Controls.Add(this.showUserButton);
-            this.managerTabPage.Controls.Add(this.unhidebutton);
-            this.managerTabPage.Controls.Add(this.deephidebutton);
             this.managerTabPage.Location = new System.Drawing.Point(4, 29);
             this.managerTabPage.Name = "managerTabPage";
             this.managerTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -197,26 +193,6 @@
             this.showUserButton.Text = "密码管理";
             this.showUserButton.UseVisualStyleBackColor = true;
             this.showUserButton.Click += new System.EventHandler(this.showUserButton_Click);
-            // 
-            // unhidebutton
-            // 
-            this.unhidebutton.Location = new System.Drawing.Point(110, 398);
-            this.unhidebutton.Name = "unhidebutton";
-            this.unhidebutton.Size = new System.Drawing.Size(122, 29);
-            this.unhidebutton.TabIndex = 9;
-            this.unhidebutton.Text = "显示所有表单";
-            this.unhidebutton.UseVisualStyleBackColor = true;
-            this.unhidebutton.Click += new System.EventHandler(this.Button2_Click_1);
-            // 
-            // deephidebutton
-            // 
-            this.deephidebutton.Location = new System.Drawing.Point(110, 346);
-            this.deephidebutton.Name = "deephidebutton";
-            this.deephidebutton.Size = new System.Drawing.Size(122, 29);
-            this.deephidebutton.TabIndex = 8;
-            this.deephidebutton.Text = "深度隐藏表单";
-            this.deephidebutton.UseVisualStyleBackColor = true;
-            this.deephidebutton.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // buysideTabPage
             // 
@@ -311,8 +287,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage managerTabPage;
         private System.Windows.Forms.TabPage buysideTabPage;
-        private System.Windows.Forms.Button unhidebutton;
-        private System.Windows.Forms.Button deephidebutton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox usernameBox;

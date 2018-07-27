@@ -71,6 +71,7 @@ namespace ExcelAddIn1
         public static Dictionary<string, string> getPermission(string userName)
         {
             //Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets
+            if (userName == Constants.root) return null;
             Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Excel.Worksheet>().SingleOrDefault(w => w.Name == Constants.UserPermissionTable);
             if (worksheet == null) return null;
             Range currentFind;
@@ -80,7 +81,7 @@ namespace ExcelAddIn1
             Range firstRow = worksheet.UsedRange.Rows[1];
             if(currentFind == null)
             {
-                MessageBox.Show(userName + "is not found in permission table.");
+                MessageBox.Show(userName + " is not found in permission table.");
                 return null;
             }
             Range theRow = worksheet.UsedRange.Rows[currentFind.Row];
@@ -99,6 +100,11 @@ namespace ExcelAddIn1
                 if (isRootUser == true)
                 {
                     Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
+                    foreach (Excel.Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
+                    {
+                       unHideWorkSheet(ws);
+                       ws.Unprotect(Constants.key);
+                    }
                     return;
                 }
                 if (permission == null) return;
@@ -123,16 +129,9 @@ namespace ExcelAddIn1
                         }
                     }
                 }
-                if (permission.ContainsKey(Constants.structure))
+                if (!permission.ContainsKey(Constants.structure) || permission[Constants.structure] != Constants.Mutable)
                 {
-                    if (permission[Constants.structure] != Constants.Mutable)
-                    {
-                        Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
-                    }
-                }
-                else
-                {
-                    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
+                   Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
                 }
             }
             catch (System.Runtime.InteropServices.COMException)

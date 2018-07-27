@@ -32,8 +32,6 @@ namespace ExcelAddIn1
                 tpc.login(Constants.guest);
                 tpc.SetUserLabel(Constants.guest);
             }
-
-
         }
     }
 }

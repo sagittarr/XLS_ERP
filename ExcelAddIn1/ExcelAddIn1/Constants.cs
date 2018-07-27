@@ -13,6 +13,7 @@ namespace ExcelAddIn1
         public const string PermissionOperation = "Writable,ReadOnly,Invisible";
         public const string Writable = "Writable";
         public const string ReadOnly = "ReadOnly";
+        public const string Visible = "Visible";
         public const string Invisible = "Invisible";
         public const string UserPasswordTable = "UserPasswordTable";
         public const string UserPermissionTable = "UserPermissionTable";
@@ -22,5 +23,9 @@ namespace ExcelAddIn1
         public const string root = "root";
         public const string guest = "guest";
         public const string structure = "structure";
+
+        public const string managementTab = "managementTab";
+        public const string sellsideTab = "sellsideTab";
+        public const string buysideTab = "buysideTab";
     }
 }
