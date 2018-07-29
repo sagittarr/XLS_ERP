@@ -139,7 +139,25 @@ namespace ExcelAddIn1
                 MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
+        //private static object[,] ReadValues(Excel.Worksheet sheet, int lastRow, int lastColumn)
+        //{
+        //    object[,] cellValues;
+        //    var firstCell = sheet.get_Range("A1", Type.Missing);
+        //    var lastCell = (Excel.Range)sheet.Cells[lastRow, lastColumn];
 
+        //    if (lastRow == 1 && lastColumn == 1)
+        //    {
+        //        cellValues = new object[2, 2];
+        //        cellValues[1, 1] = firstCell.Value2;
+        //    }
+        //    else
+        //    {
+        //        Excel.Range worksheetCells = sheet.get_Range(firstCell, lastCell);
+        //        cellValues = worksheetCells.Value2 as object[,];
+        //    }
+
+        //    return cellValues;
+        //}
         #region VSTO generated code
 
         /// <summary>

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using System.Data;
 
 namespace ExcelAddIn1
 {
@@ -429,6 +430,192 @@ namespace ExcelAddIn1
             {
                 tabControl1.TabPages.Add(buysideTabPage);
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
+                Range range1 = orderInput.UsedRange.Rows;
+                List<List<string>> table1 = ToValues(range1, orderInput.UsedRange.Columns.Count);
+                Dictionary<String, Dictionary<string, string>> rangeDict1 = ToDict(table1, "OrderNo");
+                Worksheet accountInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "收款输入");
+                Range range2 = accountInput.UsedRange.Rows;
+                List<List<string>> table2 = ToValues(range2, accountInput.UsedRange.Columns.Count);
+                //MessageBox.Show(String.Join(",",table2[1].ToArray()));
+                //Dictionary<string, List<string>>
+                Worksheet outputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "汇总结果");
+                int width = outputSheet.UsedRange.Columns.Count;
+                List<List<string>> table3 = ToValues(outputSheet.UsedRange.Columns, outputSheet.UsedRange.Columns.Count);
+                string[] headers = table3[0].ToArray();
+
+                System.Data.DataTable accountTable = new System.Data.DataTable("accountTable");
+                foreach(string colStr in table2[0])
+                {
+                    DataColumn col = new DataColumn(colStr);
+                    col.DataType = System.Type.GetType("System.String");
+                    accountTable.Columns.Add(new DataColumn(colStr));
+                }
+
+                foreach (var rowInput in table2.Skip(1))
+                {
+                    DataRow row = accountTable.NewRow();
+                    for(var i = 0; i< table2[0].Count; i++)
+                    {
+                        row[table2[0][i]] = rowInput[i];
+                    }
+                    accountTable.Rows.Add(row);
+                }
+                //MessageBox.Show(accountTable.Columns.Count.ToString()+","+ accountTable.Rows.Count.ToString());
+                //foreach (DataRow row in accountTable.Rows)
+                //{
+                //    object[] arr = row.ItemArray;
+                //    var newRow = outputSheet.UsedRange.Rows.Count + 1;
+                //    var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
+                //    rng.Value2 = arr;
+                //}
+
+                foreach (string orderNumber in rangeDict1.Keys)
+                {
+                    var orderInputRow = rangeDict1[orderNumber];
+                    List<object> outputRow = new List<object>();
+                    string expression;
+                    expression = "OrderNo =" + "'" + orderNumber + "'";
+                    DataRow[] foundRows;
+                    foundRows = accountTable.Select(expression);
+                    foreach (DataRow r in foundRows)
+                    {
+                        foreach (string header in headers)
+                        {
+                            if (accountTable.Columns.Contains(header))
+                            {
+                                outputRow.Add(r[header]);
+                            }
+                            else
+                            {
+                                outputRow.Add("");
+                            }
+                        }
+                        var newRow = outputSheet.UsedRange.Rows.Count + 1;
+                        var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
+                        string[] result = Array.ConvertAll<object, string>(outputRow.ToArray(), ConvertObjectToString);
+                        rng.Value2 = result;
+                        outputRow.Clear();
+                    }
+                    foreach (string header in headers)
+                    {
+                        if (orderInputRow.ContainsKey(header))
+                        {
+                            outputRow.Add(orderInputRow[header]);
+                        }
+                        else
+                        {
+                            outputRow.Add("");
+                        }
+                    }
+                    var newRow1 = outputSheet.UsedRange.Rows.Count + 1;
+                    var rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
+                    rng1.Value2 = outputRow.ToArray();
+                }
+                //Range line = (Range)outputSheet.Rows[2];
+                //line.Value2 = 
+                //line.Insert();
+                //var rng = outputSheet.Range[outputSheet.Cells[2, 1], outputSheet.Cells[2, width]];
+                //rng.Value2 = headers;
+                //Dictionary<String, Dictionary<string, string>> rangeDict2 = ToDict(table2, "Order No.");
+                //if (table.Count > 1)
+                //{
+                //    List<String> headers = table[0];
+                //    int indexOfKey = headers.IndexOf("Order No.");
+                //    if(indexOfKey == -1)
+                //    {
+                //        MessageBox.Show("'Order No.' is not found");
+                //        return;
+                //    }
+                //    for(var i=1; i<table.Count; i++)
+                //    {
+                //        string key = table[i][indexOfKey];
+                //        Dictionary<string, string> rowDict = new Dictionary<string, string>();
+                //        for (var j = 0 ; j<headers.Count; j++)
+                //        {
+                //            rowDict[headers[j]] = table[i][j];
+                //        }
+                //        ;
+                //        MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
+                //        rangeDict[key] = rowDict;
+                //    }
+                //}
+                //MessageBox.Show(String.Join(",", table1[0].ToArray()));
+                //MessageBox.Show(String.Join(",", table2[0].ToArray()));
+
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
+            }
+        }
+        string ConvertObjectToString(object obj)
+        {
+            return obj?.ToString() ?? string.Empty;
+        }
+        public Dictionary<String, Dictionary<string, string>> ToDict(List<List<string>> table, string keyColumn)
+        {
+            Dictionary<String, Dictionary<string, string>> rangeDict = new Dictionary<String, Dictionary<string, string>>();
+            if (table.Count > 1)
+            {
+                List<String> headers = table[0];
+                int indexOfKey = headers.IndexOf(keyColumn);
+                if (indexOfKey == -1)
+                {
+                    MessageBox.Show("'"+ keyColumn+"' is not found");
+                    return null;
+                }
+                for (var i = 1; i < table.Count; i++)
+                {
+                    string key = table[i][indexOfKey];
+                    Dictionary<string, string> rowDict = new Dictionary<string, string>();
+                    for (var j = 0; j < headers.Count; j++)
+                    {
+                        rowDict[headers[j]] = table[i][j];
+                    }
+                    ;
+                    MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
+                    rangeDict[key] = rowDict;
+                }
+            }
+            return rangeDict;
+
+        }
+        public List<List<string>> ToValues(Range range, int columns)
+        {
+            object[,] values = range.Value2 as object[,];
+
+            //firstColumn.t
+            List<List<string>> table = new List<List<string>>();
+            List<string> list = new List<string>();
+            foreach (object o in values)
+            {
+                if(list.Count == columns)
+                {
+                    table.Add(list);
+                    list = new List<string>();
+                }
+                if (o == null)
+                {
+                    list.Add("");
+                }
+                else
+                {
+                    list.Add(o.ToString());
+                }
+
+            }
+            if (list.Count != 0)
+            {
+                table.Add(list);
+            }
+            return table;
         }
     }
 }
