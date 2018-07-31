@@ -515,40 +515,16 @@ namespace ExcelAddIn1
                         }
                     }
                     var newRow1 = outputSheet.UsedRange.Rows.Count + 1;
-                    var rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
+                    Range rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
                     rng1.Value2 = outputRow.ToArray();
                 }
-                //Range line = (Range)outputSheet.Rows[2];
-                //line.Value2 = 
-                //line.Insert();
-                //var rng = outputSheet.Range[outputSheet.Cells[2, 1], outputSheet.Cells[2, width]];
-                //rng.Value2 = headers;
-                //Dictionary<String, Dictionary<string, string>> rangeDict2 = ToDict(table2, "Order No.");
-                //if (table.Count > 1)
-                //{
-                //    List<String> headers = table[0];
-                //    int indexOfKey = headers.IndexOf("Order No.");
-                //    if(indexOfKey == -1)
-                //    {
-                //        MessageBox.Show("'Order No.' is not found");
-                //        return;
-                //    }
-                //    for(var i=1; i<table.Count; i++)
-                //    {
-                //        string key = table[i][indexOfKey];
-                //        Dictionary<string, string> rowDict = new Dictionary<string, string>();
-                //        for (var j = 0 ; j<headers.Count; j++)
-                //        {
-                //            rowDict[headers[j]] = table[i][j];
-                //        }
-                //        ;
-                //        MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
-                //        rangeDict[key] = rowDict;
-                //    }
-                //}
-                //MessageBox.Show(String.Join(",", table1[0].ToArray()));
-                //MessageBox.Show(String.Join(",", table2[0].ToArray()));
 
+                outputSheet.Columns[7].TextToColumns();
+                outputSheet.Columns[8].TextToColumns();
+                //outputSheet.Columns[7].NumberFormat = "0";
+                //var formula = outputSheet.Range["H1"].Formula;
+                //outputSheet.UsedRange.Rows.Range["H1:H" + outputSheet.UsedRange.Rows.Count.ToString()].Formula = formula;
+                //outputSheet.UsedRange.Rows.Range["H1:H" + outputSheet.UsedRange.Rows.Count.ToString()].Calculate();
             }
             catch (System.Runtime.InteropServices.COMException)
             {
@@ -580,7 +556,7 @@ namespace ExcelAddIn1
                         rowDict[headers[j]] = table[i][j];
                     }
                     ;
-                    MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
+                    //MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
                     rangeDict[key] = rowDict;
                 }
             }
@@ -616,6 +592,12 @@ namespace ExcelAddIn1
                 table.Add(list);
             }
             return table;
+        }
+
+        private void InputButton_Click(object sender, EventArgs e)
+        {
+            Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "June(2)");
+            Range range1 = orderInput.UsedRange.Rows;
         }
     }
 }

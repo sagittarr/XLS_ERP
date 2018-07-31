@@ -17,7 +17,6 @@ D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.pdb
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.dll.manifest
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\bin\Debug\ExcelAddIn1.vsto
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
-D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csprojAssemblyReference.cache
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.ManageTaskPaneRibbon.resources
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.Properties.Resources.resources
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.TaskPaneControl.resources
@@ -26,3 +25,4 @@ D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csproj.CoreCompileInput
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csproj.CopyComplete
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.dll
 D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.pdb
+D:\XLS_ERP\ExcelAddIn1\ExcelAddIn1\obj\Debug\ExcelAddIn1.csprojAssemblyReference.cache
