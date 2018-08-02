@@ -519,8 +519,8 @@ namespace ExcelAddIn1
                     rng1.Value2 = outputRow.ToArray();
                 }
 
-                outputSheet.Columns[7].TextToColumns();
-                outputSheet.Columns[8].TextToColumns();
+                //outputSheet.Columns[7].Rows[2].TextToColumns();
+                //outputSheet.Columns[8].Rows[2].TextToColumns();
                 //outputSheet.Columns[7].NumberFormat = "0";
                 //var formula = outputSheet.Range["H1"].Formula;
                 //outputSheet.UsedRange.Rows.Range["H1:H" + outputSheet.UsedRange.Rows.Count.ToString()].Formula = formula;
@@ -596,8 +596,34 @@ namespace ExcelAddIn1
 
         private void InputButton_Click(object sender, EventArgs e)
         {
-            Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "June(2)");
-            Range range1 = orderInput.UsedRange.Rows;
+            Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "JUN2");
+            //Range range1 = orderInput.UsedRange.Rows;
+            //List<List<string>> table1 = ToValues(range1, orderInput.UsedRange.Columns.Count);
+            //orderInput.get_Range("C:C").EntireColumn.Hidden = true;
+            string columnsToHide = "C,E,G,H,I,K,L,N,O,Q,T";
+            string[] cols = columnsToHide.Split(',');
+            foreach(string col in cols)
+            {
+
+                orderInput.UsedRange.Columns[col+":"+ col, Type.Missing].Hidden = true;
+            }
+            //orderInput.UsedRange.Columns["C:C", Type.Missing].Hidden = true;
+            //orderInput.UsedRange.Columns["E:E", Type.Missing].Hidden = true;
+            //orderInput.get_Range("E:G").Columns.Hidden = true;
+            //MessageBox.Show(orderInput.UsedRange.Columns.Count.ToString());
+
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void showColumnsButton_Click(object sender, EventArgs e)
+        {
+            Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "JUN2");
+            orderInput.UsedRange.Columns.Hidden = false;
         }
     }
 }
