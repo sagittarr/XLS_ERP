@@ -28,5 +28,9 @@ namespace ExcelAddIn1
             }
             return _createdPanes[key];
         }
+        public static void CopySheet(string existing, string newSheetName, int rows, int columns)
+        {
+
+        }
     }
 }

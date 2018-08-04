@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.showColumnPermissionButton = new System.Windows.Forms.Button();
+            this.showColumnsButton = new System.Windows.Forms.Button();
             this.InputButton = new System.Windows.Forms.Button();
             this.aggregationButton = new System.Windows.Forms.Button();
             this.userLabel = new System.Windows.Forms.Label();
@@ -53,7 +55,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.printDocument1 = new System.Drawing.Printing.PrintDocument();
             this.eventLog1 = new System.Diagnostics.EventLog();
-            this.showColumnsButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.managerTabPage.SuspendLayout();
@@ -77,6 +78,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.showColumnPermissionButton);
             this.tabPage1.Controls.Add(this.showColumnsButton);
             this.tabPage1.Controls.Add(this.InputButton);
             this.tabPage1.Controls.Add(this.aggregationButton);
@@ -96,6 +98,26 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "身份选择";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // showColumnPermissionButton
+            // 
+            this.showColumnPermissionButton.Location = new System.Drawing.Point(86, 311);
+            this.showColumnPermissionButton.Name = "showColumnPermissionButton";
+            this.showColumnPermissionButton.Size = new System.Drawing.Size(126, 34);
+            this.showColumnPermissionButton.TabIndex = 16;
+            this.showColumnPermissionButton.Text = "列权限";
+            this.showColumnPermissionButton.UseVisualStyleBackColor = true;
+            this.showColumnPermissionButton.Click += new System.EventHandler(this.showColumnPermission_Click);
+            // 
+            // showColumnsButton
+            // 
+            this.showColumnsButton.Location = new System.Drawing.Point(86, 271);
+            this.showColumnsButton.Name = "showColumnsButton";
+            this.showColumnsButton.Size = new System.Drawing.Size(126, 34);
+            this.showColumnsButton.TabIndex = 15;
+            this.showColumnsButton.Text = "显示所有列";
+            this.showColumnsButton.UseVisualStyleBackColor = true;
+            this.showColumnsButton.Click += new System.EventHandler(this.showColumnsButton_Click);
             // 
             // InputButton
             // 
@@ -329,16 +351,6 @@
             // 
             this.eventLog1.SynchronizingObject = this;
             // 
-            // showColumnsButton
-            // 
-            this.showColumnsButton.Location = new System.Drawing.Point(86, 271);
-            this.showColumnsButton.Name = "showColumnsButton";
-            this.showColumnsButton.Size = new System.Drawing.Size(126, 34);
-            this.showColumnsButton.TabIndex = 15;
-            this.showColumnsButton.Text = "显示所有列";
-            this.showColumnsButton.UseVisualStyleBackColor = true;
-            this.showColumnsButton.Click += new System.EventHandler(this.showColumnsButton_Click);
-            // 
             // TaskPaneControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -385,5 +397,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button showColumnsButton;
+        private System.Windows.Forms.Button showColumnPermissionButton;
     }
 }

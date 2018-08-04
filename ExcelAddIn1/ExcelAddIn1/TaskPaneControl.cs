@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Excel;
 using System.Reflection;
-using System.Data;
+//using System.Data;
 
 namespace ExcelAddIn1
 {
@@ -624,6 +624,11 @@ namespace ExcelAddIn1
         {
             Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "JUN2");
             orderInput.UsedRange.Columns.Hidden = false;
+        }
+
+        private void showColumnPermission_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
