@@ -436,66 +436,60 @@ namespace ExcelAddIn1
         {
             try
             {
-                Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
-                Range range1 = orderInput.UsedRange.Rows;
-                List<List<string>> table1 = ToValues(range1, orderInput.UsedRange.Columns.Count);
-                Dictionary<String, Dictionary<string, string>> rangeDict1 = ToDict(table1, "OrderNo");
-                Worksheet accountInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "收款输入");
-                Range range2 = accountInput.UsedRange.Rows;
-                List<List<string>> table2 = ToValues(range2, accountInput.UsedRange.Columns.Count);
-                //MessageBox.Show(String.Join(",",table2[1].ToArray()));
-                //Dictionary<string, List<string>>
+                Worksheet orderInputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
+                Range range1 = orderInputSheet.UsedRange.Rows;
+                List<List<string>> orderInputLists = ToValues(range1, orderInputSheet.UsedRange.Columns.Count);
+                string orderInputColumnPrefix = "(" + orderInputSheet.Name + ")";
+                Dictionary<String, Dictionary<string, string>> orderInputDict = ToDict(orderInputLists, "OrderNo");
+
+                Worksheet receiptSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "收款输入");
+                Range range2 = receiptSheet.UsedRange.Rows;
+                List<List<string>> receiptLists = ToValues(range2, receiptSheet.UsedRange.Columns.Count);
+
                 Worksheet outputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "汇总结果");
+                Range range3 = outputSheet.UsedRange.Rows;
                 int width = outputSheet.UsedRange.Columns.Count;
-                List<List<string>> table3 = ToValues(outputSheet.UsedRange.Columns, outputSheet.UsedRange.Columns.Count);
-                string[] headers = table3[0].ToArray();
-
-                System.Data.DataTable accountTable = new System.Data.DataTable("accountTable");
-                foreach(string colStr in table2[0])
+                List<List<string>> outputLists = ToValues(outputSheet.UsedRange.Columns, outputSheet.UsedRange.Columns.Count);
+                if (outputLists.Count < 4)
                 {
-                    DataColumn col = new DataColumn(colStr);
-                    col.DataType = System.Type.GetType("System.String");
-                    accountTable.Columns.Add(new DataColumn(colStr));
+                    MessageBox.Show("请确认当前表单至少有四行数据");
+                    return;
                 }
-
-                foreach (var rowInput in table2.Skip(1))
+                string[] sources = outputLists[0].ToArray();
+                string[] headers = outputLists[1].ToArray();
+                List<string> formats = outputLists[2];
+                //List<List<string>> formulas = GetFormula(range3, outputSheet.UsedRange.Columns.Count);
+                //List<string> formula = formulas[2];
+                if (sources.Length != headers.Length)
                 {
-                    DataRow row = accountTable.NewRow();
-                    for(var i = 0; i< table2[0].Count; i++)
-                    {
-                        row[table2[0][i]] = rowInput[i];
-                    }
-                    accountTable.Rows.Add(row);
+                    MessageBox.Show("请确认第一行与第二行的列数相等。");
+                    return;
                 }
-                //MessageBox.Show(accountTable.Columns.Count.ToString()+","+ accountTable.Rows.Count.ToString());
-                //foreach (DataRow row in accountTable.Rows)
-                //{
-                //    object[] arr = row.ItemArray;
-                //    var newRow = outputSheet.UsedRange.Rows.Count + 1;
-                //    var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
-                //    rng.Value2 = arr;
-                //}
-
-                foreach (string orderNumber in rangeDict1.Keys)
+                //string receiptColumnPrefix = "";
+                //string orderInputColumnPrefix = orderInputSheet.Name;
+                System.Data.DataTable receiptTable = toDataTable(receiptLists);
+                //MessageBox.Show(receiptTable.Rows.Count.ToString());
+                foreach (string orderNumber in orderInputDict.Keys)
                 {
-                    var orderInputRow = rangeDict1[orderNumber];
+                    var orderInputRow = orderInputDict[orderNumber];
                     List<object> outputRow = new List<object>();
                     string expression;
                     expression = "OrderNo =" + "'" + orderNumber + "'";
                     DataRow[] foundRows;
-                    foundRows = accountTable.Select(expression);
+                    foundRows = receiptTable.Select(expression);
                     foreach (DataRow r in foundRows)
                     {
-                        foreach (string header in headers)
+                        for (var i = 0; i < sources.Length; i++)
                         {
-                            if (accountTable.Columns.Contains(header))
+                            if (sources[i] == receiptSheet.Name)
                             {
-                                outputRow.Add(r[header]);
+                                if (receiptTable.Columns.Contains(headers[i]))
+                                {
+                                    outputRow.Add(r[headers[i]]);
+                                    continue;
+                                }
                             }
-                            else
-                            {
-                                outputRow.Add("");
-                            }
+                            outputRow.Add("");
                         }
                         var newRow = outputSheet.UsedRange.Rows.Count + 1;
                         var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
@@ -503,38 +497,80 @@ namespace ExcelAddIn1
                         rng.Value2 = result;
                         outputRow.Clear();
                     }
-                    foreach (string header in headers)
+                    for (var i = 0; i < sources.Length; i++)
                     {
-                        if (orderInputRow.ContainsKey(header))
+                        if (sources[i] == orderInputSheet.Name)
                         {
-                            outputRow.Add(orderInputRow[header]);
+                            if (orderInputRow.ContainsKey(headers[i]))
+                            {
+                                outputRow.Add(orderInputRow[headers[i]]);
+                                continue;
+                            }
                         }
-                        else
-                        {
-                            outputRow.Add("");
-                        }
+                        outputRow.Add("");
                     }
                     var newRow1 = outputSheet.UsedRange.Rows.Count + 1;
                     Range rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
                     rng1.Value2 = outputRow.ToArray();
+                    
                 }
-
-                //outputSheet.Columns[7].Rows[2].TextToColumns();
-                //outputSheet.Columns[8].Rows[2].TextToColumns();
-                //outputSheet.Columns[7].NumberFormat = "0";
-                //var formula = outputSheet.Range["H1"].Formula;
-                //outputSheet.UsedRange.Rows.Range["H1:H" + outputSheet.UsedRange.Rows.Count.ToString()].Formula = formula;
-                //outputSheet.UsedRange.Rows.Range["H1:H" + outputSheet.UsedRange.Rows.Count.ToString()].Calculate();
+                for(var i = 0; i<formats.Count; i++)
+                {
+                    if(string.Equals(formats[i], "Number", StringComparison.OrdinalIgnoreCase))
+                    {
+                        outputSheet.UsedRange.Columns[i + 1].TextToColumns();
+                    }                   
+                }
+                
+                for (var j = 5; j < outputSheet.UsedRange.Rows.Count+1; j++)
+                {
+                    Range row = outputSheet.UsedRange.Rows[j];
+                   for (var i =1; i<row.Columns.Count; i++)
+                    {
+                        if (outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1.ToString() != "")
+                        {
+                            //MessageBox.Show(outputSheet.UsedRange.Rows[3].Columns[i].FormulaR1C1.ToString());
+                            row.Columns[i].FormulaR1C1 = outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1;
+                            row.Columns[i].Calculate();
+                        }
+                        //
+                    }
+                }
             }
             catch (System.Runtime.InteropServices.COMException)
             {
                 MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
             }
         }
+        
         string ConvertObjectToString(object obj)
         {
             return obj?.ToString() ?? string.Empty;
         }
+
+        public System.Data.DataTable toDataTable(List<List<string>> lists)
+        {
+            System.Data.DataTable table = new System.Data.DataTable();
+            foreach (string colStr in lists[0])
+            {
+                var colStrVal = colStr;
+                DataColumn dataColumn = new DataColumn(colStrVal);
+                dataColumn.DataType = System.Type.GetType("System.String");
+                table.Columns.Add(dataColumn);
+            }
+
+            foreach (var rowInput in lists.Skip(1))
+            {
+                DataRow row = table.NewRow();
+                for (var i = 0; i < lists[0].Count; i++)
+                {
+                    row[lists[0][i]] = rowInput[i];
+                }
+                table.Rows.Add(row);
+            }
+            return table;
+        }
+
         public Dictionary<String, Dictionary<string, string>> ToDict(List<List<string>> table, string keyColumn)
         {
             Dictionary<String, Dictionary<string, string>> rangeDict = new Dictionary<String, Dictionary<string, string>>();
@@ -544,7 +580,7 @@ namespace ExcelAddIn1
                 int indexOfKey = headers.IndexOf(keyColumn);
                 if (indexOfKey == -1)
                 {
-                    MessageBox.Show("'"+ keyColumn+"' is not found");
+                    MessageBox.Show("'" + keyColumn + "' is not found");
                     return null;
                 }
                 for (var i = 1; i < table.Count; i++)
@@ -554,8 +590,7 @@ namespace ExcelAddIn1
                     for (var j = 0; j < headers.Count; j++)
                     {
                         rowDict[headers[j]] = table[i][j];
-                    }
-                    ;
+                    };
                     //MessageBox.Show(string.Join(";", rowDict.Select(x => x.Key + "=" + x.Value).ToArray()));
                     rangeDict[key] = rowDict;
                 }
@@ -563,16 +598,16 @@ namespace ExcelAddIn1
             return rangeDict;
 
         }
-        public List<List<string>> ToValues(Range range, int columns)
+        public List<List<string>> GetFormula(Range range, int columns)
         {
-            object[,] values = range.Value2 as object[,];
+            object[,] values = range.Formula as object[,];
 
             //firstColumn.t
             List<List<string>> table = new List<List<string>>();
             List<string> list = new List<string>();
             foreach (object o in values)
             {
-                if(list.Count == columns)
+                if (list.Count == columns)
                 {
                     table.Add(list);
                     list = new List<string>();
@@ -585,7 +620,35 @@ namespace ExcelAddIn1
                 {
                     list.Add(o.ToString());
                 }
+            }
+            if (list.Count != 0)
+            {
+                table.Add(list);
+            }
+            return table;
+        }
+        public List<List<string>> ToValues(Range range, int columns)
+        {
+            object[,] values = range.Value2 as object[,];
 
+            //firstColumn.t
+            List<List<string>> table = new List<List<string>>();
+            List<string> list = new List<string>();
+            foreach (object o in values)
+            {
+                if (list.Count == columns)
+                {
+                    table.Add(list);
+                    list = new List<string>();
+                }
+                if (o == null)
+                {
+                    list.Add("");
+                }
+                else
+                {
+                    list.Add(o.ToString());
+                }
             }
             if (list.Count != 0)
             {
@@ -602,10 +665,10 @@ namespace ExcelAddIn1
             //orderInput.get_Range("C:C").EntireColumn.Hidden = true;
             string columnsToHide = "C,E,G,H,I,K,L,N,O,Q,T";
             string[] cols = columnsToHide.Split(',');
-            foreach(string col in cols)
+            foreach (string col in cols)
             {
 
-                orderInput.UsedRange.Columns[col+":"+ col, Type.Missing].Hidden = true;
+                orderInput.UsedRange.Columns[col + ":" + col, Type.Missing].Hidden = true;
             }
             //orderInput.UsedRange.Columns["C:C", Type.Missing].Hidden = true;
             //orderInput.UsedRange.Columns["E:E", Type.Missing].Hidden = true;
