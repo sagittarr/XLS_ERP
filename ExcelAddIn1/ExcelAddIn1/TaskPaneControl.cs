@@ -644,7 +644,7 @@ namespace ExcelAddIn1
                     MessageBox.Show("请确认第一行与第二行的列数相等。");
                     return;
                 }
-
+                outputSheet.Range["5:" + outputLists.Count.ToString()].Delete();
                 System.Data.DataTable receiptTable = toDataTable(receiptLists);
                 foreach (string orderNumber in orderInputDict.Keys)
                 {
@@ -693,7 +693,7 @@ namespace ExcelAddIn1
                 }
                 for (var i = 0; i < formats.Count; i++)
                 {
-                    if (string.Equals(formats[i], "Number", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(formats[i], "TextToColumn", StringComparison.OrdinalIgnoreCase))
                     {
                         outputSheet.UsedRange.Columns[i + 1].TextToColumns();
                     }
@@ -744,6 +744,59 @@ namespace ExcelAddIn1
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+        private void NaviToSheet(string sheetName)
+        {
+            try
+            {
+                Worksheet theSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets[sheetName];
+                if (theSheet != null)
+                {
+                    theSheet.Select();
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
+            }
+        }
+        private void NaviToAggregationButtion_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("汇总结果");
+        }
+        private void ShowAggregationAsSalesButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("汇总结果");
+        }
+        private void ShowAggregationAsBuysideButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("汇总结果");
+        }
+
+        private void NaviToOrderInputAsSalesButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("订单输入");
+        }
+        private void NaviToOrderInputAsBuysideButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("订单输入");
+        }
+        private void NaviToReceiptAsSalesButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("收款输入");
+        }
+        private void NaviToReceiptAsBuysideButton_Click(object sender, EventArgs e)
+        {
+            NaviToSheet("收款输入");
+        }
+
+        private void unhideRange_Click(object sender, EventArgs e)
+        {
+            Worksheet theSheet = Globals.ThisAddIn.Application.ActiveSheet;
+            if (theSheet != null)
+            {
+                theSheet.UsedRange.Columns.Hidden = false;
+            }
         }
     }
 }
