@@ -378,6 +378,8 @@ namespace ExcelAddIn1
             ThisAddIn.applyPermission(permission, username == Constants.root);
             this.SetUserLabel(username);
             showTabForUser(username, permission);
+            CheckSheets();
+            //checkedListBox1.Items
         }
         public void logout()
         {
@@ -434,113 +436,7 @@ namespace ExcelAddIn1
 
         private void button3_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Worksheet orderInputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
-                Range range1 = orderInputSheet.UsedRange.Rows;
-                List<List<string>> orderInputLists = ToValues(range1, orderInputSheet.UsedRange.Columns.Count);
-                string orderInputColumnPrefix = "(" + orderInputSheet.Name + ")";
-                Dictionary<String, Dictionary<string, string>> orderInputDict = ToDict(orderInputLists, "OrderNo");
-
-                Worksheet receiptSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "收款输入");
-                Range range2 = receiptSheet.UsedRange.Rows;
-                List<List<string>> receiptLists = ToValues(range2, receiptSheet.UsedRange.Columns.Count);
-
-                Worksheet outputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "汇总结果");
-                Range range3 = outputSheet.UsedRange.Rows;
-                int width = outputSheet.UsedRange.Columns.Count;
-                List<List<string>> outputLists = ToValues(outputSheet.UsedRange.Columns, outputSheet.UsedRange.Columns.Count);
-                if (outputLists.Count < 4)
-                {
-                    MessageBox.Show("请确认当前表单至少有四行数据");
-                    return;
-                }
-                string[] sources = outputLists[0].ToArray();
-                string[] headers = outputLists[1].ToArray();
-                List<string> formats = outputLists[2];
-                //List<List<string>> formulas = GetFormula(range3, outputSheet.UsedRange.Columns.Count);
-                //List<string> formula = formulas[2];
-                if (sources.Length != headers.Length)
-                {
-                    MessageBox.Show("请确认第一行与第二行的列数相等。");
-                    return;
-                }
-                //string receiptColumnPrefix = "";
-                //string orderInputColumnPrefix = orderInputSheet.Name;
-                System.Data.DataTable receiptTable = toDataTable(receiptLists);
-                //MessageBox.Show(receiptTable.Rows.Count.ToString());
-                foreach (string orderNumber in orderInputDict.Keys)
-                {
-                    var orderInputRow = orderInputDict[orderNumber];
-                    List<object> outputRow = new List<object>();
-                    string expression;
-                    expression = "OrderNo =" + "'" + orderNumber + "'";
-                    DataRow[] foundRows;
-                    foundRows = receiptTable.Select(expression);
-                    foreach (DataRow r in foundRows)
-                    {
-                        for (var i = 0; i < sources.Length; i++)
-                        {
-                            if (sources[i] == receiptSheet.Name)
-                            {
-                                if (receiptTable.Columns.Contains(headers[i]))
-                                {
-                                    outputRow.Add(r[headers[i]]);
-                                    continue;
-                                }
-                            }
-                            outputRow.Add("");
-                        }
-                        var newRow = outputSheet.UsedRange.Rows.Count + 1;
-                        var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
-                        string[] result = Array.ConvertAll<object, string>(outputRow.ToArray(), ConvertObjectToString);
-                        rng.Value2 = result;
-                        outputRow.Clear();
-                    }
-                    for (var i = 0; i < sources.Length; i++)
-                    {
-                        if (sources[i] == orderInputSheet.Name)
-                        {
-                            if (orderInputRow.ContainsKey(headers[i]))
-                            {
-                                outputRow.Add(orderInputRow[headers[i]]);
-                                continue;
-                            }
-                        }
-                        outputRow.Add("");
-                    }
-                    var newRow1 = outputSheet.UsedRange.Rows.Count + 1;
-                    Range rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
-                    rng1.Value2 = outputRow.ToArray();
-                    
-                }
-                for(var i = 0; i<formats.Count; i++)
-                {
-                    if(string.Equals(formats[i], "Number", StringComparison.OrdinalIgnoreCase))
-                    {
-                        outputSheet.UsedRange.Columns[i + 1].TextToColumns();
-                    }                   
-                }
-                
-                for (var j = 5; j < outputSheet.UsedRange.Rows.Count+1; j++)
-                {
-                    Range row = outputSheet.UsedRange.Rows[j];
-                   for (var i =1; i<row.Columns.Count; i++)
-                    {
-                        if (outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1.ToString() != "")
-                        {
-                            //MessageBox.Show(outputSheet.UsedRange.Rows[3].Columns[i].FormulaR1C1.ToString());
-                            row.Columns[i].FormulaR1C1 = outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1;
-                            row.Columns[i].Calculate();
-                        }
-                        //
-                    }
-                }
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
-            }
+ 
         }
         
         string ConvertObjectToString(object obj)
@@ -690,6 +586,162 @@ namespace ExcelAddIn1
         }
 
         private void showColumnPermission_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aggregationButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!CheckSheets())
+                {
+                    return;
+                }
+                Worksheet orderInputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
+                Range range1 = orderInputSheet.UsedRange.Rows;
+                List<List<string>> orderInputLists = ToValues(range1, orderInputSheet.UsedRange.Columns.Count);
+                if (orderInputLists!=null && orderInputLists.Count < 1)
+                {
+                    MessageBox.Show("请确认<订单输入>表单至少有一行数据");
+                    return;
+                }
+                if(orderInputLists[0]==null || !orderInputLists[0].Contains("OrderNo"))
+                {
+                    MessageBox.Show("请确认<订单输入>表单有<OrderNo>列");
+                    return;
+                }
+                Dictionary<String, Dictionary<string, string>> orderInputDict = ToDict(orderInputLists, "OrderNo");
+
+
+                Worksheet receiptSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "收款输入");
+                Range range2 = receiptSheet.UsedRange.Rows;
+                List<List<string>> receiptLists = ToValues(range2, receiptSheet.UsedRange.Columns.Count);
+                if (receiptLists != null && receiptLists.Count < 1)
+                {
+                    MessageBox.Show("请确认<收款输入>表单至少有一行数据");
+                    return;
+                }
+                if (receiptLists[0] == null || !receiptLists[0].Contains("OrderNo"))
+                {
+                    MessageBox.Show("请确认<收款输入>表单有<OrderNo>列");
+                    return;
+                }
+                Worksheet outputSheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "汇总结果");
+                Range range3 = outputSheet.UsedRange.Rows;
+                int width = outputSheet.UsedRange.Columns.Count;
+                List<List<string>> outputLists = ToValues(outputSheet.UsedRange.Columns, outputSheet.UsedRange.Columns.Count);
+                if (outputLists.Count < 4)
+                {
+                    MessageBox.Show("请确认当前表单至少有四行数据");
+                    return;
+                }
+                string[] sources = outputLists[0].ToArray();
+                string[] headers = outputLists[1].ToArray();
+                List<string> formats = outputLists[2];
+                if (sources.Length != headers.Length)
+                {
+                    MessageBox.Show("请确认第一行与第二行的列数相等。");
+                    return;
+                }
+
+                System.Data.DataTable receiptTable = toDataTable(receiptLists);
+                foreach (string orderNumber in orderInputDict.Keys)
+                {
+                    var orderInputRow = orderInputDict[orderNumber];
+                    List<object> outputRow = new List<object>();
+                    string expression;
+                    expression = "OrderNo =" + "'" + orderNumber + "'";
+                    DataRow[] foundRows;
+                    foundRows = receiptTable.Select(expression);
+                    foreach (DataRow r in foundRows)
+                    {
+                        for (var i = 0; i < sources.Length; i++)
+                        {
+                            if (sources[i] == receiptSheet.Name)
+                            {
+                                if (receiptTable.Columns.Contains(headers[i]))
+                                {
+                                    outputRow.Add(r[headers[i]]);
+                                    continue;
+                                }
+                            }
+                            outputRow.Add("");
+                        }
+                        var newRow = outputSheet.UsedRange.Rows.Count + 1;
+                        var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
+                        string[] result = Array.ConvertAll<object, string>(outputRow.ToArray(), ConvertObjectToString);
+                        rng.Value2 = result;
+                        outputRow.Clear();
+                    }
+                    for (var i = 0; i < sources.Length; i++)
+                    {
+                        if (sources[i] == orderInputSheet.Name)
+                        {
+                            if (orderInputRow.ContainsKey(headers[i]))
+                            {
+                                outputRow.Add(orderInputRow[headers[i]]);
+                                continue;
+                            }
+                        }
+                        outputRow.Add("");
+                    }
+                    var newRow1 = outputSheet.UsedRange.Rows.Count + 1;
+                    Range rng1 = outputSheet.Range[outputSheet.Cells[newRow1, 1], outputSheet.Cells[newRow1, width]];
+                    rng1.Value2 = outputRow.ToArray();
+
+                }
+                for (var i = 0; i < formats.Count; i++)
+                {
+                    if (string.Equals(formats[i], "Number", StringComparison.OrdinalIgnoreCase))
+                    {
+                        outputSheet.UsedRange.Columns[i + 1].TextToColumns();
+                    }
+                }
+
+                for (var j = 5; j < outputSheet.UsedRange.Rows.Count + 1; j++)
+                {
+                    Range row = outputSheet.UsedRange.Rows[j];
+                    for (var i = 1; i < row.Columns.Count; i++)
+                    {
+                        if (outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1.ToString() != "")
+                        {
+                            //MessageBox.Show(outputSheet.UsedRange.Rows[3].Columns[i].FormulaR1C1.ToString());
+                            row.Columns[i].FormulaR1C1 = outputSheet.UsedRange.Rows[4].Columns[i].FormulaR1C1;
+                            row.Columns[i].Calculate();
+                        }
+                        //
+                    }
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            {
+                MessageBox.Show(Constants.PROTECTED_ERROR_MESSAGE);
+            }
+        }
+
+        private bool CheckSheets()
+        {
+            for(var i = 0; i < checkedListBox1.Items.Count; i++)
+            {
+                object item = checkedListBox1.Items[i];
+                Worksheet ws = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == item.ToString());
+                if (ws == null)
+                {
+                    checkedListBox1.SetItemCheckState(i, CheckState.Unchecked);
+                    MessageBox.Show("Worksheet "+ item.ToString()+ " is missing.");
+                    return false;
+                }
+                else
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+            }
+            return true;
+        }
+
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

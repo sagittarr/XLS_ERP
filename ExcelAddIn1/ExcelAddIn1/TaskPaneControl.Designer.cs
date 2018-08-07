@@ -30,10 +30,6 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.showColumnPermissionButton = new System.Windows.Forms.Button();
-            this.showColumnsButton = new System.Windows.Forms.Button();
-            this.InputButton = new System.Windows.Forms.Button();
-            this.aggregationButton = new System.Windows.Forms.Button();
             this.userLabel = new System.Windows.Forms.Label();
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginbutton = new System.Windows.Forms.Button();
@@ -43,8 +39,6 @@
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.managerTabPage = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.ManageButton = new System.Windows.Forms.Button();
             this.showUserButton = new System.Windows.Forms.Button();
             this.buysideTabPage = new System.Windows.Forms.TabPage();
@@ -53,14 +47,13 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.sellsideTabPage = new System.Windows.Forms.TabPage();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-            this.eventLog1 = new System.Diagnostics.EventLog();
+            this.aggregationButton = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.managerTabPage.SuspendLayout();
             this.buysideTabPage.SuspendLayout();
             this.sellsideTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -78,10 +71,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.showColumnPermissionButton);
-            this.tabPage1.Controls.Add(this.showColumnsButton);
-            this.tabPage1.Controls.Add(this.InputButton);
-            this.tabPage1.Controls.Add(this.aggregationButton);
             this.tabPage1.Controls.Add(this.userLabel);
             this.tabPage1.Controls.Add(this.logoutButton);
             this.tabPage1.Controls.Add(this.loginbutton);
@@ -99,46 +88,6 @@
             this.tabPage1.Text = "身份选择";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // showColumnPermissionButton
-            // 
-            this.showColumnPermissionButton.Location = new System.Drawing.Point(86, 311);
-            this.showColumnPermissionButton.Name = "showColumnPermissionButton";
-            this.showColumnPermissionButton.Size = new System.Drawing.Size(126, 34);
-            this.showColumnPermissionButton.TabIndex = 16;
-            this.showColumnPermissionButton.Text = "列权限";
-            this.showColumnPermissionButton.UseVisualStyleBackColor = true;
-            this.showColumnPermissionButton.Click += new System.EventHandler(this.showColumnPermission_Click);
-            // 
-            // showColumnsButton
-            // 
-            this.showColumnsButton.Location = new System.Drawing.Point(86, 271);
-            this.showColumnsButton.Name = "showColumnsButton";
-            this.showColumnsButton.Size = new System.Drawing.Size(126, 34);
-            this.showColumnsButton.TabIndex = 15;
-            this.showColumnsButton.Text = "显示所有列";
-            this.showColumnsButton.UseVisualStyleBackColor = true;
-            this.showColumnsButton.Click += new System.EventHandler(this.showColumnsButton_Click);
-            // 
-            // InputButton
-            // 
-            this.InputButton.Location = new System.Drawing.Point(86, 230);
-            this.InputButton.Name = "InputButton";
-            this.InputButton.Size = new System.Drawing.Size(126, 34);
-            this.InputButton.TabIndex = 14;
-            this.InputButton.Text = "销售订单输入";
-            this.InputButton.UseVisualStyleBackColor = true;
-            this.InputButton.Click += new System.EventHandler(this.InputButton_Click);
-            // 
-            // aggregationButton
-            // 
-            this.aggregationButton.Location = new System.Drawing.Point(86, 189);
-            this.aggregationButton.Name = "aggregationButton";
-            this.aggregationButton.Size = new System.Drawing.Size(43, 35);
-            this.aggregationButton.TabIndex = 13;
-            this.aggregationButton.Text = "聚合";
-            this.aggregationButton.UseVisualStyleBackColor = true;
-            this.aggregationButton.Click += new System.EventHandler(this.button3_Click);
-            // 
             // userLabel
             // 
             this.userLabel.AutoSize = true;
@@ -151,10 +100,10 @@
             // 
             // logoutButton
             // 
-            this.logoutButton.Location = new System.Drawing.Point(134, 189);
+            this.logoutButton.Location = new System.Drawing.Point(85, 204);
             this.logoutButton.Margin = new System.Windows.Forms.Padding(2);
             this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(37, 35);
+            this.logoutButton.Size = new System.Drawing.Size(127, 35);
             this.logoutButton.TabIndex = 11;
             this.logoutButton.Text = "退出登录并保护工作簿";
             this.logoutButton.UseVisualStyleBackColor = true;
@@ -162,10 +111,10 @@
             // 
             // loginbutton
             // 
-            this.loginbutton.Location = new System.Drawing.Point(85, 150);
+            this.loginbutton.Location = new System.Drawing.Point(85, 157);
             this.loginbutton.Margin = new System.Windows.Forms.Padding(2);
             this.loginbutton.Name = "loginbutton";
-            this.loginbutton.Size = new System.Drawing.Size(51, 34);
+            this.loginbutton.Size = new System.Drawing.Size(127, 34);
             this.loginbutton.TabIndex = 8;
             this.loginbutton.Text = "登录";
             this.loginbutton.UseVisualStyleBackColor = true;
@@ -174,7 +123,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(67, 45);
+            this.label3.Location = new System.Drawing.Point(98, 42);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(104, 13);
@@ -223,8 +172,8 @@
             // 
             // managerTabPage
             // 
-            this.managerTabPage.Controls.Add(this.button4);
-            this.managerTabPage.Controls.Add(this.button3);
+            this.managerTabPage.Controls.Add(this.checkedListBox1);
+            this.managerTabPage.Controls.Add(this.aggregationButton);
             this.managerTabPage.Controls.Add(this.ManageButton);
             this.managerTabPage.Controls.Add(this.showUserButton);
             this.managerTabPage.Location = new System.Drawing.Point(4, 22);
@@ -236,28 +185,9 @@
             this.managerTabPage.Text = "管理员控制台";
             this.managerTabPage.UseVisualStyleBackColor = true;
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(73, 204);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(119, 34);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "单证输入权限";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(73, 164);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(119, 34);
-            this.button3.TabIndex = 13;
-            this.button3.Text = "销售输入权限";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click_1);
-            // 
             // ManageButton
             // 
-            this.ManageButton.Location = new System.Drawing.Point(73, 115);
+            this.ManageButton.Location = new System.Drawing.Point(83, 116);
             this.ManageButton.Name = "ManageButton";
             this.ManageButton.Size = new System.Drawing.Size(119, 34);
             this.ManageButton.TabIndex = 12;
@@ -267,7 +197,7 @@
             // 
             // showUserButton
             // 
-            this.showUserButton.Location = new System.Drawing.Point(73, 69);
+            this.showUserButton.Location = new System.Drawing.Point(83, 65);
             this.showUserButton.Margin = new System.Windows.Forms.Padding(2);
             this.showUserButton.Name = "showUserButton";
             this.showUserButton.Size = new System.Drawing.Size(119, 33);
@@ -347,9 +277,30 @@
             this.comboBox1.Size = new System.Drawing.Size(139, 21);
             this.comboBox1.TabIndex = 0;
             // 
-            // eventLog1
+            // aggregationButton
             // 
-            this.eventLog1.SynchronizingObject = this;
+            this.aggregationButton.Location = new System.Drawing.Point(83, 284);
+            this.aggregationButton.Name = "aggregationButton";
+            this.aggregationButton.Size = new System.Drawing.Size(119, 34);
+            this.aggregationButton.TabIndex = 15;
+            this.aggregationButton.Text = "一键汇总";
+            this.aggregationButton.UseVisualStyleBackColor = true;
+            this.aggregationButton.Click += new System.EventHandler(this.aggregationButton_Click);
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.Enabled = false;
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Items.AddRange(new object[] {
+            "订单输入",
+            "收款输入",
+            "汇总结果"});
+            this.checkedListBox1.Location = new System.Drawing.Point(83, 205);
+            this.checkedListBox1.MultiColumn = true;
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.Size = new System.Drawing.Size(119, 64);
+            this.checkedListBox1.TabIndex = 17;
+            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // TaskPaneControl
             // 
@@ -365,7 +316,6 @@
             this.managerTabPage.ResumeLayout(false);
             this.buysideTabPage.ResumeLayout(false);
             this.sellsideTabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -385,18 +335,12 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Drawing.Printing.PrintDocument printDocument1;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Diagnostics.EventLog eventLog1;
         private System.Windows.Forms.Button loginbutton;
         private System.Windows.Forms.Button ManageButton;
         private System.Windows.Forms.Label userLabel;
         private System.Windows.Forms.Button logoutButton;
         private System.Windows.Forms.Button aggregationButton;
-        private System.Windows.Forms.Button InputButton;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button showColumnsButton;
-        private System.Windows.Forms.Button showColumnPermissionButton;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
     }
 }
