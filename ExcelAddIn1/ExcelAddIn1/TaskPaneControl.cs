@@ -460,7 +460,14 @@ namespace ExcelAddIn1
                 DataRow row = table.NewRow();
                 for (var i = 0; i < lists[0].Count; i++)
                 {
-                    row[lists[0][i]] = rowInput[i];
+                    if (table.Columns.Contains(lists[0][i]))
+                    {
+                        row[lists[0][i]] = rowInput[i];
+                    }
+                    else
+                    {
+                        MessageBox.Show("'" + lists[0][i] + "' is not found");
+                    }
                 }
                 table.Rows.Add(row);
             }
@@ -670,8 +677,9 @@ namespace ExcelAddIn1
                         }
                         var newRow = outputSheet.UsedRange.Rows.Count + 1;
                         var rng = outputSheet.Range[outputSheet.Cells[newRow, 1], outputSheet.Cells[newRow, width]];
-                        string[] result = Array.ConvertAll<object, string>(outputRow.ToArray(), ConvertObjectToString);
-                        rng.Value2 = result;
+                        //string[] result = Array.ConvertAll<object, string>(outputRow.ToArray(), ConvertObjectToString);
+                        //rng.Value2 = result;
+                        rng.Value2 = outputRow.ToArray();
                         outputRow.Clear();
                     }
                     for (var i = 0; i < sources.Length; i++)
@@ -691,13 +699,13 @@ namespace ExcelAddIn1
                     rng1.Value2 = outputRow.ToArray();
 
                 }
-                for (var i = 0; i < formats.Count; i++)
-                {
-                    if (string.Equals(formats[i], "TextToColumn", StringComparison.OrdinalIgnoreCase))
-                    {
-                        outputSheet.UsedRange.Columns[i + 1].TextToColumns();
-                    }
-                }
+                //for (var i = 0; i < formats.Count; i++)
+                //{
+                //    if (string.Equals(formats[i], "TextToColumn", StringComparison.OrdinalIgnoreCase))
+                //    {
+                //        outputSheet.UsedRange.Columns[i + 1].TextToColumns();
+                //    }
+                //}
 
                 for (var j = 5; j < outputSheet.UsedRange.Rows.Count + 1; j++)
                 {

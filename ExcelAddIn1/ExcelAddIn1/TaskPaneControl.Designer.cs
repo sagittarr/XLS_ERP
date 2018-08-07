@@ -67,7 +67,8 @@
             this.tabControl1.Controls.Add(this.managerTabPage);
             this.tabControl1.Controls.Add(this.buysideTabPage);
             this.tabControl1.Controls.Add(this.sellsideTabPage);
-            this.tabControl1.Location = new System.Drawing.Point(0, 2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -332,7 +333,7 @@
             // 
             // NaviToReceiptAsBuysideButton
             // 
-            this.NaviToReceiptAsBuysideButton.Location = new System.Drawing.Point(87, 216);
+            this.NaviToReceiptAsBuysideButton.Location = new System.Drawing.Point(87, 227);
             this.NaviToReceiptAsBuysideButton.Margin = new System.Windows.Forms.Padding(2);
             this.NaviToReceiptAsBuysideButton.Name = "NaviToReceiptAsBuysideButton";
             this.NaviToReceiptAsBuysideButton.Size = new System.Drawing.Size(119, 33);
@@ -343,7 +344,7 @@
             // 
             // ShowAggregationAsBuysideButton
             // 
-            this.ShowAggregationAsBuysideButton.Location = new System.Drawing.Point(87, 170);
+            this.ShowAggregationAsBuysideButton.Location = new System.Drawing.Point(87, 177);
             this.ShowAggregationAsBuysideButton.Name = "ShowAggregationAsBuysideButton";
             this.ShowAggregationAsBuysideButton.Size = new System.Drawing.Size(119, 34);
             this.ShowAggregationAsBuysideButton.TabIndex = 19;
