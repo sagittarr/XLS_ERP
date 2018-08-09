@@ -42,7 +42,7 @@ namespace ExcelAddIn1
         }
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Exit.");
+            //MessageBox.Show("Exit.");
         }
         public static void deepHideWorkSheet(Excel.Worksheet theSheet)
         {
@@ -79,7 +79,7 @@ namespace ExcelAddIn1
             currentFind = range.Cells.Find(userName, Type.Missing, XlFindLookIn.xlValues, XlLookAt.xlWhole,
                             XlSearchOrder.xlByRows, XlSearchDirection.xlNext, true, false, false);
             Range firstRow = worksheet.UsedRange.Rows[1];
-            if(currentFind == null)
+            if (currentFind == null)
             {
                 MessageBox.Show(userName + " is not found in permission table.");
                 return null;
@@ -102,8 +102,8 @@ namespace ExcelAddIn1
                     Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
                     foreach (Excel.Worksheet ws in Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets)
                     {
-                       unHideWorkSheet(ws);
-                       ws.Unprotect(Constants.key);
+                        unHideWorkSheet(ws);
+                        ws.Unprotect(Constants.key);
                     }
                     return;
                 }
@@ -131,7 +131,7 @@ namespace ExcelAddIn1
                 }
                 if (!permission.ContainsKey(Constants.structure) || permission[Constants.structure] != Constants.Mutable)
                 {
-                   Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
+                    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
                 }
             }
             catch (System.Runtime.InteropServices.COMException)
@@ -169,7 +169,7 @@ namespace ExcelAddIn1
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }

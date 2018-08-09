@@ -52,13 +52,13 @@
             // group1
             // 
             this.group1.Items.Add(this.toggleButton1);
-            this.group1.Label = "ERP Excel 助手";
+            this.group1.Label = "信可 ERP 助手";
             this.group1.Name = "group1";
             // 
             // toggleButton1
             // 
             this.toggleButton1.Image = ((System.Drawing.Image)(resources.GetObject("toggleButton1.Image")));
-            this.toggleButton1.Label = "开启ERP";
+            this.toggleButton1.Label = "启动";
             this.toggleButton1.Name = "toggleButton1";
             this.toggleButton1.ShowImage = true;
             this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton1_Click);

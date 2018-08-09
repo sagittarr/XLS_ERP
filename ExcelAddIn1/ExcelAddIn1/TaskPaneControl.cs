@@ -21,6 +21,9 @@ namespace ExcelAddIn1
             tabControl1.TabPages.Remove(managerTabPage);
             tabControl1.TabPages.Remove(buysideTabPage);
             tabControl1.TabPages.Remove(sellsideTabPage);
+            toolTip1.SetToolTip(aggregationLabel, "请确保所需表单存在");
+            toolTip1.SetToolTip(checkedListBox1, "请确保所需表单存在");
+            
         }
         private void deepHideWorkSheet(Worksheet theSheet)
         {
@@ -375,9 +378,10 @@ namespace ExcelAddIn1
         public void login(string username)
         {
             var permission = ThisAddIn.getPermission(username);
+            showTabForUser(username, permission);
             ThisAddIn.applyPermission(permission, username == Constants.root);
             this.SetUserLabel(username);
-            showTabForUser(username, permission);
+            
             CheckSheets();
             //checkedListBox1.Items
         }
@@ -427,10 +431,17 @@ namespace ExcelAddIn1
             if (permission != null && permission.ContainsKey(Constants.sellsideTab) && permission[Constants.sellsideTab] == Constants.Visible)
             {
                 tabControl1.TabPages.Add(sellsideTabPage);
+                tabControl1.SelectedTab = sellsideTabPage;
+                Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
+                if (orderInput != null)
+                {
+                    orderInput.Protection.AllowEditRanges.Add("salesAllowEdit", orderInput.UsedRange.Columns[2]);
+                }
             }
             if (permission != null && permission.ContainsKey(Constants.buysideTab) && permission[Constants.buysideTab] == Constants.Visible)
             {
                 tabControl1.TabPages.Add(buysideTabPage);
+                tabControl1.SelectedTab = buysideTabPage;
             }
         }
 
@@ -581,10 +592,6 @@ namespace ExcelAddIn1
 
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-
-        }
 
         private void showColumnsButton_Click(object sender, EventArgs e)
         {
@@ -592,10 +599,6 @@ namespace ExcelAddIn1
             orderInput.UsedRange.Columns.Hidden = false;
         }
 
-        private void showColumnPermission_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void aggregationButton_Click(object sender, EventArgs e)
         {
@@ -749,10 +752,7 @@ namespace ExcelAddIn1
         }
 
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
         private void NaviToSheet(string sheetName)
         {
             try
@@ -805,6 +805,26 @@ namespace ExcelAddIn1
             {
                 theSheet.UsedRange.Columns.Hidden = false;
             }
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void managerTabPage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolTip1_Popup_1(object sender, PopupEventArgs e)
+        {
+
         }
     }
 }

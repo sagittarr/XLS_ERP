@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TaskPaneControl));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.userLabel = new System.Windows.Forms.Label();
             this.logoutButton = new System.Windows.Forms.Button();
             this.loginbutton = new System.Windows.Forms.Button();
@@ -39,26 +42,31 @@
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.managerTabPage = new System.Windows.Forms.TabPage();
+            this.aggregationLabel = new System.Windows.Forms.Label();
+            this.unhideRange = new System.Windows.Forms.Button();
+            this.NaviToAggregationButtion = new System.Windows.Forms.Button();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.aggregationButton = new System.Windows.Forms.Button();
             this.ManageButton = new System.Windows.Forms.Button();
             this.showUserButton = new System.Windows.Forms.Button();
             this.buysideTabPage = new System.Windows.Forms.TabPage();
-            this.sellsideTabPage = new System.Windows.Forms.TabPage();
-            this.NaviToAggregationButtion = new System.Windows.Forms.Button();
-            this.unhideRange = new System.Windows.Forms.Button();
-            this.aggregationLabel = new System.Windows.Forms.Label();
-            this.NaviToOrderInputAsSalesButton = new System.Windows.Forms.Button();
-            this.NaviToReceiptAsSalesButton = new System.Windows.Forms.Button();
-            this.NaviToOrderInputAsBuysideButton = new System.Windows.Forms.Button();
-            this.NaviToReceiptAsBuysideButton = new System.Windows.Forms.Button();
             this.ShowAggregationAsBuysideButton = new System.Windows.Forms.Button();
+            this.NaviToReceiptAsBuysideButton = new System.Windows.Forms.Button();
+            this.NaviToOrderInputAsBuysideButton = new System.Windows.Forms.Button();
+            this.sellsideTabPage = new System.Windows.Forms.TabPage();
             this.ShowAggregationAsSalesButton = new System.Windows.Forms.Button();
+            this.NaviToReceiptAsSalesButton = new System.Windows.Forms.Button();
+            this.NaviToOrderInputAsSalesButton = new System.Windows.Forms.Button();
+            this.helpTab = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.managerTabPage.SuspendLayout();
             this.buysideTabPage.SuspendLayout();
             this.sellsideTabPage.SuspendLayout();
+            this.helpTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -67,7 +75,8 @@
             this.tabControl1.Controls.Add(this.managerTabPage);
             this.tabControl1.Controls.Add(this.buysideTabPage);
             this.tabControl1.Controls.Add(this.sellsideTabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tabControl1.Controls.Add(this.helpTab);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
@@ -77,6 +86,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Controls.Add(this.userLabel);
             this.tabPage1.Controls.Add(this.logoutButton);
             this.tabPage1.Controls.Add(this.loginbutton);
@@ -94,6 +104,16 @@
             this.tabPage1.Text = "身份选择";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox1.Location = new System.Drawing.Point(85, 20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(127, 81);
+            this.pictureBox1.TabIndex = 13;
+            this.pictureBox1.TabStop = false;
+            // 
             // userLabel
             // 
             this.userLabel.AutoSize = true;
@@ -106,18 +126,18 @@
             // 
             // logoutButton
             // 
-            this.logoutButton.Location = new System.Drawing.Point(85, 204);
+            this.logoutButton.Location = new System.Drawing.Point(85, 291);
             this.logoutButton.Margin = new System.Windows.Forms.Padding(2);
             this.logoutButton.Name = "logoutButton";
             this.logoutButton.Size = new System.Drawing.Size(127, 35);
             this.logoutButton.TabIndex = 11;
-            this.logoutButton.Text = "退出登录并保护工作簿";
+            this.logoutButton.Text = "退出登录";
             this.logoutButton.UseVisualStyleBackColor = true;
             this.logoutButton.Click += new System.EventHandler(this.logoutButton_Click);
             // 
             // loginbutton
             // 
-            this.loginbutton.Location = new System.Drawing.Point(85, 157);
+            this.loginbutton.Location = new System.Drawing.Point(85, 244);
             this.loginbutton.Margin = new System.Windows.Forms.Padding(2);
             this.loginbutton.Name = "loginbutton";
             this.loginbutton.Size = new System.Drawing.Size(127, 34);
@@ -129,7 +149,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(98, 42);
+            this.label3.Location = new System.Drawing.Point(94, 121);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(104, 13);
@@ -140,7 +160,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 118);
+            this.label2.Location = new System.Drawing.Point(27, 201);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 13);
@@ -150,7 +170,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 87);
+            this.label1.Location = new System.Drawing.Point(27, 162);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
@@ -160,7 +180,7 @@
             // 
             // usernameBox
             // 
-            this.usernameBox.Location = new System.Drawing.Point(85, 84);
+            this.usernameBox.Location = new System.Drawing.Point(85, 159);
             this.usernameBox.Margin = new System.Windows.Forms.Padding(2);
             this.usernameBox.Name = "usernameBox";
             this.usernameBox.Size = new System.Drawing.Size(127, 20);
@@ -169,7 +189,7 @@
             // 
             // passwordBox
             // 
-            this.passwordBox.Location = new System.Drawing.Point(85, 115);
+            this.passwordBox.Location = new System.Drawing.Point(85, 201);
             this.passwordBox.Margin = new System.Windows.Forms.Padding(2);
             this.passwordBox.Name = "passwordBox";
             this.passwordBox.Size = new System.Drawing.Size(127, 20);
@@ -193,9 +213,40 @@
             this.managerTabPage.TabIndex = 1;
             this.managerTabPage.Text = "管理员控制台";
             this.managerTabPage.UseVisualStyleBackColor = true;
+            this.managerTabPage.Click += new System.EventHandler(this.managerTabPage_Click);
+            // 
+            // aggregationLabel
+            // 
+            this.aggregationLabel.AutoSize = true;
+            this.aggregationLabel.Location = new System.Drawing.Point(116, 171);
+            this.aggregationLabel.Name = "aggregationLabel";
+            this.aggregationLabel.Size = new System.Drawing.Size(55, 13);
+            this.aggregationLabel.TabIndex = 20;
+            this.aggregationLabel.Text = "汇总表单";
+            // 
+            // unhideRange
+            // 
+            this.unhideRange.Location = new System.Drawing.Point(83, 297);
+            this.unhideRange.Name = "unhideRange";
+            this.unhideRange.Size = new System.Drawing.Size(119, 34);
+            this.unhideRange.TabIndex = 19;
+            this.unhideRange.Text = "显示所有行列";
+            this.unhideRange.UseVisualStyleBackColor = true;
+            this.unhideRange.Click += new System.EventHandler(this.unhideRange_Click);
+            // 
+            // NaviToAggregationButtion
+            // 
+            this.NaviToAggregationButtion.Location = new System.Drawing.Point(83, 119);
+            this.NaviToAggregationButtion.Name = "NaviToAggregationButtion";
+            this.NaviToAggregationButtion.Size = new System.Drawing.Size(119, 34);
+            this.NaviToAggregationButtion.TabIndex = 18;
+            this.NaviToAggregationButtion.Text = "查看汇总结果";
+            this.NaviToAggregationButtion.UseVisualStyleBackColor = true;
+            this.NaviToAggregationButtion.Click += new System.EventHandler(this.NaviToAggregationButtion_Click);
             // 
             // checkedListBox1
             // 
+            this.checkedListBox1.Cursor = System.Windows.Forms.Cursors.Default;
             this.checkedListBox1.Enabled = false;
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.Items.AddRange(new object[] {
@@ -207,7 +258,6 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(119, 64);
             this.checkedListBox1.TabIndex = 17;
-            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // aggregationButton
             // 
@@ -255,6 +305,38 @@
             this.buysideTabPage.UseVisualStyleBackColor = true;
             this.buysideTabPage.Click += new System.EventHandler(this.tabPage3_Click);
             // 
+            // ShowAggregationAsBuysideButton
+            // 
+            this.ShowAggregationAsBuysideButton.Location = new System.Drawing.Point(87, 177);
+            this.ShowAggregationAsBuysideButton.Name = "ShowAggregationAsBuysideButton";
+            this.ShowAggregationAsBuysideButton.Size = new System.Drawing.Size(119, 34);
+            this.ShowAggregationAsBuysideButton.TabIndex = 19;
+            this.ShowAggregationAsBuysideButton.Text = "查看汇总结果";
+            this.ShowAggregationAsBuysideButton.UseVisualStyleBackColor = true;
+            this.ShowAggregationAsBuysideButton.Click += new System.EventHandler(this.ShowAggregationAsBuysideButton_Click);
+            // 
+            // NaviToReceiptAsBuysideButton
+            // 
+            this.NaviToReceiptAsBuysideButton.Location = new System.Drawing.Point(87, 227);
+            this.NaviToReceiptAsBuysideButton.Margin = new System.Windows.Forms.Padding(2);
+            this.NaviToReceiptAsBuysideButton.Name = "NaviToReceiptAsBuysideButton";
+            this.NaviToReceiptAsBuysideButton.Size = new System.Drawing.Size(119, 33);
+            this.NaviToReceiptAsBuysideButton.TabIndex = 13;
+            this.NaviToReceiptAsBuysideButton.Text = "收款记录";
+            this.NaviToReceiptAsBuysideButton.UseVisualStyleBackColor = true;
+            this.NaviToReceiptAsBuysideButton.Click += new System.EventHandler(this.NaviToReceiptAsBuysideButton_Click);
+            // 
+            // NaviToOrderInputAsBuysideButton
+            // 
+            this.NaviToOrderInputAsBuysideButton.Location = new System.Drawing.Point(87, 127);
+            this.NaviToOrderInputAsBuysideButton.Margin = new System.Windows.Forms.Padding(2);
+            this.NaviToOrderInputAsBuysideButton.Name = "NaviToOrderInputAsBuysideButton";
+            this.NaviToOrderInputAsBuysideButton.Size = new System.Drawing.Size(119, 33);
+            this.NaviToOrderInputAsBuysideButton.TabIndex = 12;
+            this.NaviToOrderInputAsBuysideButton.Text = "销售订单";
+            this.NaviToOrderInputAsBuysideButton.UseVisualStyleBackColor = true;
+            this.NaviToOrderInputAsBuysideButton.Click += new System.EventHandler(this.NaviToOrderInputAsBuysideButton_Click);
+            // 
             // sellsideTabPage
             // 
             this.sellsideTabPage.Controls.Add(this.ShowAggregationAsSalesButton);
@@ -269,45 +351,15 @@
             this.sellsideTabPage.Text = "销售模块";
             this.sellsideTabPage.UseVisualStyleBackColor = true;
             // 
-            // NaviToAggregationButtion
+            // ShowAggregationAsSalesButton
             // 
-            this.NaviToAggregationButtion.Location = new System.Drawing.Point(83, 119);
-            this.NaviToAggregationButtion.Name = "NaviToAggregationButtion";
-            this.NaviToAggregationButtion.Size = new System.Drawing.Size(119, 34);
-            this.NaviToAggregationButtion.TabIndex = 18;
-            this.NaviToAggregationButtion.Text = "查看汇总结果";
-            this.NaviToAggregationButtion.UseVisualStyleBackColor = true;
-            this.NaviToAggregationButtion.Click += new System.EventHandler(this.NaviToAggregationButtion_Click);
-            // 
-            // unhideRange
-            // 
-            this.unhideRange.Location = new System.Drawing.Point(83, 297);
-            this.unhideRange.Name = "unhideRange";
-            this.unhideRange.Size = new System.Drawing.Size(119, 34);
-            this.unhideRange.TabIndex = 19;
-            this.unhideRange.Text = "显示所有行列";
-            this.unhideRange.UseVisualStyleBackColor = true;
-            this.unhideRange.Click += new System.EventHandler(this.unhideRange_Click);
-            // 
-            // aggregationLabel
-            // 
-            this.aggregationLabel.AutoSize = true;
-            this.aggregationLabel.Location = new System.Drawing.Point(114, 171);
-            this.aggregationLabel.Name = "aggregationLabel";
-            this.aggregationLabel.Size = new System.Drawing.Size(55, 13);
-            this.aggregationLabel.TabIndex = 20;
-            this.aggregationLabel.Text = "汇总表单";
-            // 
-            // NaviToOrderInputAsSalesButton
-            // 
-            this.NaviToOrderInputAsSalesButton.Location = new System.Drawing.Point(87, 126);
-            this.NaviToOrderInputAsSalesButton.Margin = new System.Windows.Forms.Padding(2);
-            this.NaviToOrderInputAsSalesButton.Name = "NaviToOrderInputAsSalesButton";
-            this.NaviToOrderInputAsSalesButton.Size = new System.Drawing.Size(119, 33);
-            this.NaviToOrderInputAsSalesButton.TabIndex = 11;
-            this.NaviToOrderInputAsSalesButton.Text = "销售订单";
-            this.NaviToOrderInputAsSalesButton.UseVisualStyleBackColor = true;
-            this.NaviToOrderInputAsSalesButton.Click += new System.EventHandler(this.NaviToOrderInputAsSalesButton_Click);
+            this.ShowAggregationAsSalesButton.Location = new System.Drawing.Point(87, 170);
+            this.ShowAggregationAsSalesButton.Name = "ShowAggregationAsSalesButton";
+            this.ShowAggregationAsSalesButton.Size = new System.Drawing.Size(119, 34);
+            this.ShowAggregationAsSalesButton.TabIndex = 19;
+            this.ShowAggregationAsSalesButton.Text = "查看汇总结果";
+            this.ShowAggregationAsSalesButton.UseVisualStyleBackColor = true;
+            this.ShowAggregationAsSalesButton.Click += new System.EventHandler(this.ShowAggregationAsSalesButton_Click);
             // 
             // NaviToReceiptAsSalesButton
             // 
@@ -320,47 +372,40 @@
             this.NaviToReceiptAsSalesButton.UseVisualStyleBackColor = true;
             this.NaviToReceiptAsSalesButton.Click += new System.EventHandler(this.NaviToReceiptAsSalesButton_Click);
             // 
-            // NaviToOrderInputAsBuysideButton
+            // NaviToOrderInputAsSalesButton
             // 
-            this.NaviToOrderInputAsBuysideButton.Location = new System.Drawing.Point(87, 127);
-            this.NaviToOrderInputAsBuysideButton.Margin = new System.Windows.Forms.Padding(2);
-            this.NaviToOrderInputAsBuysideButton.Name = "NaviToOrderInputAsBuysideButton";
-            this.NaviToOrderInputAsBuysideButton.Size = new System.Drawing.Size(119, 33);
-            this.NaviToOrderInputAsBuysideButton.TabIndex = 12;
-            this.NaviToOrderInputAsBuysideButton.Text = "销售订单";
-            this.NaviToOrderInputAsBuysideButton.UseVisualStyleBackColor = true;
-            this.NaviToOrderInputAsBuysideButton.Click += new System.EventHandler(this.NaviToOrderInputAsBuysideButton_Click);
+            this.NaviToOrderInputAsSalesButton.Location = new System.Drawing.Point(87, 126);
+            this.NaviToOrderInputAsSalesButton.Margin = new System.Windows.Forms.Padding(2);
+            this.NaviToOrderInputAsSalesButton.Name = "NaviToOrderInputAsSalesButton";
+            this.NaviToOrderInputAsSalesButton.Size = new System.Drawing.Size(119, 33);
+            this.NaviToOrderInputAsSalesButton.TabIndex = 11;
+            this.NaviToOrderInputAsSalesButton.Text = "销售订单";
+            this.NaviToOrderInputAsSalesButton.UseVisualStyleBackColor = true;
+            this.NaviToOrderInputAsSalesButton.Click += new System.EventHandler(this.NaviToOrderInputAsSalesButton_Click);
             // 
-            // NaviToReceiptAsBuysideButton
+            // helpTab
             // 
-            this.NaviToReceiptAsBuysideButton.Location = new System.Drawing.Point(87, 227);
-            this.NaviToReceiptAsBuysideButton.Margin = new System.Windows.Forms.Padding(2);
-            this.NaviToReceiptAsBuysideButton.Name = "NaviToReceiptAsBuysideButton";
-            this.NaviToReceiptAsBuysideButton.Size = new System.Drawing.Size(119, 33);
-            this.NaviToReceiptAsBuysideButton.TabIndex = 13;
-            this.NaviToReceiptAsBuysideButton.Text = "收款记录";
-            this.NaviToReceiptAsBuysideButton.UseVisualStyleBackColor = true;
-            this.NaviToReceiptAsBuysideButton.Click += new System.EventHandler(this.NaviToReceiptAsBuysideButton_Click);
+            this.helpTab.Controls.Add(this.richTextBox1);
+            this.helpTab.Location = new System.Drawing.Point(4, 22);
+            this.helpTab.Name = "helpTab";
+            this.helpTab.Padding = new System.Windows.Forms.Padding(3);
+            this.helpTab.Size = new System.Drawing.Size(292, 374);
+            this.helpTab.TabIndex = 4;
+            this.helpTab.Text = "说明";
+            this.helpTab.UseVisualStyleBackColor = true;
             // 
-            // ShowAggregationAsBuysideButton
+            // richTextBox1
             // 
-            this.ShowAggregationAsBuysideButton.Location = new System.Drawing.Point(87, 177);
-            this.ShowAggregationAsBuysideButton.Name = "ShowAggregationAsBuysideButton";
-            this.ShowAggregationAsBuysideButton.Size = new System.Drawing.Size(119, 34);
-            this.ShowAggregationAsBuysideButton.TabIndex = 19;
-            this.ShowAggregationAsBuysideButton.Text = "查看汇总结果";
-            this.ShowAggregationAsBuysideButton.UseVisualStyleBackColor = true;
-            this.ShowAggregationAsBuysideButton.Click += new System.EventHandler(this.ShowAggregationAsBuysideButton_Click);
+            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(280, 362);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "\n说明文档\n\n1.用户名与密码由管理员提供\n2.管理员请勿使用以下保留名作为新Sheet的名字\n\n";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
-            // ShowAggregationAsSalesButton
+            // toolTip1
             // 
-            this.ShowAggregationAsSalesButton.Location = new System.Drawing.Point(87, 170);
-            this.ShowAggregationAsSalesButton.Name = "ShowAggregationAsSalesButton";
-            this.ShowAggregationAsSalesButton.Size = new System.Drawing.Size(119, 34);
-            this.ShowAggregationAsSalesButton.TabIndex = 19;
-            this.ShowAggregationAsSalesButton.Text = "查看汇总结果";
-            this.ShowAggregationAsSalesButton.UseVisualStyleBackColor = true;
-            this.ShowAggregationAsSalesButton.Click += new System.EventHandler(this.ShowAggregationAsSalesButton_Click);
+            this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup_1);
             // 
             // TaskPaneControl
             // 
@@ -373,10 +418,12 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.managerTabPage.ResumeLayout(false);
             this.managerTabPage.PerformLayout();
             this.buysideTabPage.ResumeLayout(false);
             this.sellsideTabPage.ResumeLayout(false);
+            this.helpTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -408,5 +455,9 @@
         private System.Windows.Forms.Button NaviToOrderInputAsSalesButton;
         private System.Windows.Forms.Button ShowAggregationAsBuysideButton;
         private System.Windows.Forms.Button ShowAggregationAsSalesButton;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TabPage helpTab;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
