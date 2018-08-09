@@ -445,6 +445,10 @@ namespace ExcelAddIn1
                         Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
                     }
                     orderInput.Unprotect(Constants.key);
+                    //if(orderInput.Protection.AllowEditRanges["salesAllowEdit"] == null)
+                    //{
+                       
+                    //}
                     orderInput.Protection.AllowEditRanges.Add("salesAllowEdit", orderInput.UsedRange.Columns[2]);
                     orderInput.Protect(Constants.key);
                     if (isP)
@@ -471,14 +475,22 @@ namespace ExcelAddIn1
                     Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
                 }
                 ws.Unprotect(Constants.key);
-                foreach(var n in names)
+                foreach (AllowEditRange r in ws.Protection.AllowEditRanges)
                 {
-                    AllowEditRange v = ws.Protection.AllowEditRanges[n];
-                    if (v != null)
-                    {
-                        v.Delete();
-                    }
+                    r.Delete();
                 }
+                //foreach (var n in names)
+                //{
+                //    foreach(AllowEditRange r in ws.Protection.AllowEditRanges)
+                //    {
+                //        r.Title
+                //    }
+                //    AllowEditRange v = ws.Protection.AllowEditRanges.;
+                //    if (v != null)
+                //    {
+                //        v.Delete();
+                //    }
+                //}
 
                 //ws.Protection.AllowEditRanges.Item[0].Delete();
                 ws.Protect(Constants.key);
