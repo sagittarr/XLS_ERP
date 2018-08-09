@@ -387,6 +387,9 @@ namespace ExcelAddIn1
         }
         public void logout()
         {
+            List<string> ranges = new List<string>();
+            ranges.Add("salesAllowEdit");
+            clearAllowEditRange(Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入"), ranges);
             ThisAddIn.applyPermission(ThisAddIn.getPermission(Constants.guest));
             //Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(key);
             Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key, true);
@@ -435,7 +438,20 @@ namespace ExcelAddIn1
                 Worksheet orderInput = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Cast<Worksheet>().SingleOrDefault(w => w.Name == "订单输入");
                 if (orderInput != null)
                 {
+                    bool isP = Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure;
+                    //MessageBox.Show(isP.ToString());
+                    if (isP)
+                    {
+                        Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
+                    }
+                    orderInput.Unprotect(Constants.key);
                     orderInput.Protection.AllowEditRanges.Add("salesAllowEdit", orderInput.UsedRange.Columns[2]);
+                    orderInput.Protect(Constants.key);
+                    if (isP)
+                    {
+                        Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key);
+                    }
+                    
                 }
             }
             if (permission != null && permission.ContainsKey(Constants.buysideTab) && permission[Constants.buysideTab] == Constants.Visible)
@@ -444,10 +460,34 @@ namespace ExcelAddIn1
                 tabControl1.SelectedTab = buysideTabPage;
             }
         }
-
-        private void button3_Click(object sender, EventArgs e)
+        public void clearAllowEditRange(Worksheet ws, List<string> names)
         {
- 
+            if (ws != null)
+            {
+                bool isP = Globals.ThisAddIn.Application.ActiveWorkbook.ProtectStructure;
+                //MessageBox.Show(isP.ToString());
+                if (isP)
+                {
+                    Globals.ThisAddIn.Application.ActiveWorkbook.Unprotect(Constants.key);
+                }
+                ws.Unprotect(Constants.key);
+                foreach(var n in names)
+                {
+                    AllowEditRange v = ws.Protection.AllowEditRanges[n];
+                    if (v != null)
+                    {
+                        v.Delete();
+                    }
+                }
+
+                //ws.Protection.AllowEditRanges.Item[0].Delete();
+                ws.Protect(Constants.key);
+                if (isP)
+                {
+                    Globals.ThisAddIn.Application.ActiveWorkbook.Protect(Constants.key);
+                }
+
+            }
         }
         
         string ConvertObjectToString(object obj)
